@@ -1,0 +1,85 @@
+[
+  {
+    "vivienne": {
+      "name": "Vivienne Sinclair",
+      "description": "A jazz singer with a mysterious past.",
+      "personality": "Wary but charming. She hides fear behind wit.",
+      "intro": {
+        "text": "You again. I told you I don't know anything about Lorne.",
+        "choices": [
+          { "text": "I found this cufflink at your club.", "next": "cufflink" },
+          { "text": "Come on, Viv. Talk to me.", "next": "soften" }
+        ]
+      },
+      "soften": {
+        "text": "Don't make me regret this. He was in trouble. Real trouble.",
+        "choices": [{ "text": "What kind of trouble?", "next": "trouble" }]
+      },
+      "cufflink": {
+        "condition": "found_cufflink",
+        "text": "...Lorne always wore those. I told him not to come back here.",
+        "choices": [{ "text": "Why?", "next": "warning" }]
+      },
+      "warning": {
+        "text": "Because Leone was watching. And Lorne wasn’t careful.",
+        "set_flag": "vivienne_warned_you"
+      },
+      "trouble": {
+        "text": "He talked about a shipment, something he needed to hide. Maybe Mick knows more.",
+        "set_flag": "sent_to_mick"
+      }
+    }
+  },
+  {
+    "mick": {
+      "name": "Mick",
+      "description": "A gruff, loyal locker attendant with a gruff personality.",
+      "personality": "Gruff, loyal, slow to trust.",
+      "intro": {
+        "text": "You ain't supposed to be back here.",
+        "choices": [
+          { "text": "Vivienne sent me.", "next": "trust" },
+          { "text": "I need access to locker 314.", "next": "locker" }
+        ]
+      },
+      "trust": {
+        "condition": "sent_to_mick",
+        "text": "...Alright. If Viv vouched, maybe you're okay.",
+        "set_flag": "mick_trusts_you"
+      },
+      "locker": {
+        "condition": "mick_trusts_you",
+        "text": "Here, take the key. I never saw you.",
+        "set_flag": "has_locker_key",
+        "give_item": "locker_key"
+      }
+    }
+  },
+  {
+    "leone": {
+      "name": "Leone Carro",
+      "description": "A calm, dangerous smuggler with a cold smile.",
+      "personality": "Calm, dangerous, cold.",
+      "intro": {
+        "text": "You walked into the wrong end of town, detective.",
+        "choices": [
+          { "text": "I'm looking for a man named Lorne.", "next": "lorne" },
+          { "text": "You’ve got shipments that don’t add up.", "next": "bluff" }
+        ]
+      },
+      "lorne": {
+        "text": "Lorne played a game. He lost.",
+        "choices": [{ "text": "Where is he now?", "next": "gone" }]
+      },
+      "gone": {
+        "text": "Gone. Like smoke in the rain.",
+        "set_flag": "confirmed_lorne_dead"
+      },
+      "bluff": {
+        "condition": "has_ledger",
+        "text": "...You’ve been poking around too much. That ledger’s going to cost you.",
+        "set_flag": "trigger_final_scene"
+      }
+    }
+  }
+]

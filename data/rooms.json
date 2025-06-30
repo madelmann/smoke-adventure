@@ -1,0 +1,99 @@
+[
+  {
+    "id": "bar",
+    "name": "The Blue Note",
+    "description": "A smoky jazz club with a lingering air of secrets. A piano plays in the corner. Mick polishes glasses behind the counter.",
+    "exits": {
+      "west": "office",
+      "south": "docks"
+    },
+    "items": ["bourbon"],
+    "npcs": ["mick"]
+  },
+  {
+    "id": "detective_office",
+    "description": "The blinds cast crooked shadows across a desk littered with old case files and empty glasses. Rain drums steadily against the windowpane.",
+    "items": ["whisky_bottle", "case_file"],
+    "npcs": [],
+    "exits": {
+      "south": "hallway"
+    }
+  },
+  {
+    "id": "blue_note",
+    "description": "Dim lighting. A haze of smoke hangs in the air as a saxophone moans through the static of an old speaker. Red curtains hang heavy behind the stage.",
+    "items": ["cufflink", "music_box"],
+    "npcs": ["vivienne"],
+    "exits": {
+      "east": "alley",
+      "south": "station"
+    }
+  },
+  {
+    "id": "alley",
+    "description": "A narrow passage soaked in neon and rain. Broken bottles glint in puddles, and something shifts behind the trash bins.",
+    "items": ["crowbar"],
+    "npcs": [],
+    "exits": {
+      "west": "blue_note",
+      "north": "warehouse_entrance"
+    }
+  },
+  {
+    "id": "station",
+    "description": "Flickering lights illuminate rows of old lockers. The air smells of rust, oil, and distant train brakes.",
+    "items": ["locker"],
+    "npcs": ["mick"],
+    "exits": {
+      "north": "blue_note",
+      "west": "dock"
+    }
+  },
+  {
+    "id": "warehouse_entrance",
+    "description": "A massive steel door blocks the way. Graffiti scrawled across the surface almost hides a worn plaque: 'Warehouse 12.'",
+    "items": [],
+    "npcs": ["guard"],
+    "exits": {
+      "south": "alley",
+      "north": "warehouse"
+    }
+  },
+  {
+    "id": "warehouse",
+    "description": "Stacks of crates rise like mausoleums in the dust-heavy air. A single bulb sways gently overhead, casting long shadows that don’t quite sit still.",
+    "items": ["ledger"],
+    "npcs": ["leone"],
+    "exits": {
+      "south": "warehouse_entrance"
+    }
+  },
+  {
+    "id": "dock",
+    "description": "Water laps quietly against rotting piers. A ship sits anchored in darkness. Somewhere, a gull screams.",
+    "items": ["boat_manifest"],
+    "npcs": [],
+    "exits": {
+      "east": "station"
+    }
+  },
+  {
+    "id": "hallway",
+    "description": "Bare bulbs flicker over worn linoleum. Doors line the hall like silent witnesses to a thousand forgotten arguments.",
+    "items": [],
+    "npcs": [],
+    "exits": {
+      "north": "detective_office",
+      "south": "street"
+    }
+  },
+  {
+    "id": "street",
+    "description": "The street glistens under rainfall and lamplight. Cars pass like ghosts. The city never really sleeps — it just waits.",
+    "items": [],
+    "npcs": [],
+    "exits": {
+      "north": "hallway"
+    }
+  }
+]

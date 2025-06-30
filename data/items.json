@@ -1,0 +1,62 @@
+[
+  {
+    "id": "whisky_bottle",
+    "name": "whisky bottle",
+    "description": "An almost-empty bottle of something strong enough to melt paint.",
+    "usable": false
+  },
+  {
+    "id": "case_file",
+    "name": "case file",
+    "description": "A battered manila folder. Inside: names, addresses, and one very dead end.",
+    "usable": false
+  },
+  {
+    "id": "cufflink",
+    "name": "gold cufflink",
+    "description": "A monogrammed cufflink with the initials 'L.C.' — still damp from the rain.",
+    "usable": false
+  },
+  {
+    "id": "music_box",
+    "name": "music box",
+    "description": "A delicate silver box with a broken ballerina on top. When wound, it plays a familiar melody.",
+    "usable": true,
+    "use_effect": "reveal_key"
+  },
+  {
+    "id": "crowbar",
+    "name": "crowbar",
+    "description": "Rusty, but solid. It might come in handy for forcing something open.",
+    "usable": true,
+    "use_effect": "force_door"
+  },
+  {
+    "id": "locker",
+    "name": "locker",
+    "description": "A locked metal locker, paint flaking. There's a faint ticking from within.",
+    "usable": false,
+    "locked": true,
+    "requires_item": "locker_key",
+    "contains": ["ledger"]
+  },
+  {
+    "id": "ledger",
+    "name": "ledger",
+    "description": "A thick book filled with shipping dates, names, and numbers that don’t add up. Some pages are torn out.",
+    "usable": false
+  },
+  {
+    "id": "boat_manifest",
+    "name": "boat manifest",
+    "description": "A shipping log listing recent arrivals. One name has been hastily scratched out.",
+    "usable": false
+  },
+  {
+    "id": "locker_key",
+    "name": "locker key",
+    "description": "A small brass key engraved with a locker number. Feels warm, like it was just used.",
+    "usable": true,
+    "use_effect": "unlock_locker"
+  }
+]
