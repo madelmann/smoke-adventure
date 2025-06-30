@@ -12,4 +12,5 @@ Potential goals for the future:
   with each other
 - implement display of background graphics in the online version
 - implement a sophisticated parser that's able to understand synonyms and natural language
+- implement a JSON to object serializer to automatically generate (data) object definitions from JSON structures
 
