@@ -12,6 +12,7 @@
   },
   {
     "id": "detective_office",
+    "name": "The Detective's Office",
     "description": "The blinds cast crooked shadows across a desk littered with old case files and empty glasses. Rain drums steadily against the windowpane.",
     "items": ["whisky_bottle", "case_file"],
     "npcs": [],
@@ -21,6 +22,7 @@
   },
   {
     "id": "blue_note",
+    "name": "The Blue Note",
     "description": "Dim lighting. A haze of smoke hangs in the air as a saxophone moans through the static of an old speaker. Red curtains hang heavy behind the stage.",
     "items": ["cufflink", "music_box"],
     "npcs": ["vivienne"],
@@ -31,6 +33,7 @@
   },
   {
     "id": "alley",
+    "name": "The Alley",
     "description": "A narrow passage soaked in neon and rain. Broken bottles glint in puddles, and something shifts behind the trash bins.",
     "items": ["crowbar"],
     "npcs": [],
@@ -41,6 +44,7 @@
   },
   {
     "id": "station",
+    "name": "The Train Station",
     "description": "Flickering lights illuminate rows of old lockers. The air smells of rust, oil, and distant train brakes.",
     "items": ["locker"],
     "npcs": ["mick"],
@@ -51,6 +55,7 @@
   },
   {
     "id": "warehouse_entrance",
+    "name": "The Warehouse: Entrance",
     "description": "A massive steel door blocks the way. Graffiti scrawled across the surface almost hides a worn plaque: 'Warehouse 12.'",
     "items": [],
     "npcs": ["guard"],
@@ -61,6 +66,7 @@
   },
   {
     "id": "warehouse",
+    "name": "The Warehouse",
     "description": "Stacks of crates rise like mausoleums in the dust-heavy air. A single bulb sways gently overhead, casting long shadows that don’t quite sit still.",
     "items": ["ledger"],
     "npcs": ["leone"],
@@ -70,6 +76,7 @@
   },
   {
     "id": "dock",
+    "name": "The Docks",
     "description": "Water laps quietly against rotting piers. A ship sits anchored in darkness. Somewhere, a gull screams.",
     "items": ["boat_manifest"],
     "npcs": [],
@@ -79,6 +86,7 @@
   },
   {
     "id": "hallway",
+    "name": "The Hallway",
     "description": "Bare bulbs flicker over worn linoleum. Doors line the hall like silent witnesses to a thousand forgotten arguments.",
     "items": [],
     "npcs": [],
@@ -89,6 +97,7 @@
   },
   {
     "id": "street",
+    "name": "The Street",
     "description": "The street glistens under rainfall and lamplight. Cars pass like ghosts. The city never really sleeps — it just waits.",
     "items": [],
     "npcs": [],

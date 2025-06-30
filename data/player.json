@@ -1,7 +1,5 @@
 {
   "location": "blue_note",
   "inventory": ["music_box", "locker_key"],
-  "flags": {
-    "found_cufflink": true
-  }
+  "flags": ["found_cufflink"]
 }
