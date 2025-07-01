@@ -42,12 +42,9 @@ public object Parser
                     give( item, to );
                 }
                 else if ( command == "go" ) {
-                    string direction;
                     if ( tokenIt.hasNext() ) {
-                        direction = tokenIt++;
+                        go( tokenIt++ );
                     }
-
-                    go( direction );
                 }
                 else if ( command == "help" ) {
                     printHelp();
@@ -75,12 +72,18 @@ public object Parser
                     world.save();
                 }
                 else if ( command == "take" ) {
-                    var item = tokenIt++;
+                    string item;
+                    if ( tokenIt.hasNext() ) {
+                        item = tokenIt++;
+                    }
 
                     take( item );
                 }
                 else if ( command == "use" ) {
-                    var item = tokenIt++;
+                    string item;
+                    if ( tokenIt.hasNext() ) {
+                        item = tokenIt++;
+                    }
 
                     use( item );
                 }

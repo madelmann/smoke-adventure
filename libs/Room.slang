@@ -1,14 +1,14 @@
 
 /*
-    "id": "bar",
-    "name": "The Blue Note",
-    "description": "A smoky jazz club with a lingering air of secrets. A piano plays in the corner. Mick polishes glasses behind the counter.",
-    "exits": {
-      "west": "office",
-      "south": "docks"
-    },
-    "items": ["bourbon"],
-    "npcs": ["mick"]
+"id": "bar",
+"name": "The Blue Note",
+"description": "A smoky jazz club with a lingering air of secrets. A piano plays in the corner. Mick polishes glasses behind the counter.",
+"exits": {
+    "west": "office",
+    "south": "docks"
+},
+"items": ["bourbon"],
+"npcs": ["mick"]
 */
 
 // library imports

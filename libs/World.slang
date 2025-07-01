@@ -41,6 +41,8 @@ public object World
     }
 
     public void save() const {
+        saveItems();
+        saveNPCs();
         savePlayer();
         saveRooms();
     }
@@ -144,7 +146,88 @@ public object World
         }
     }
 
+    private void saveItems() {
+        /*
+        "id": "locker",
+        "name": "locker",
+        "description": "A locked metal locker, paint flaking. There's a faint ticking from within.",
+        "usable": false,
+        "locked": true,
+        "requires_item": "locker_key",
+        "contains": ["ledger"]
+        */
+
+        var data = new JsonArray();
+
+        foreach ( Item i : items ) {
+            var itemData = new JsonObject() {
+                itemData.addMember( "id", i.id );
+                itemData.addMember( "name", i.name );
+                itemData.addMember( "description", i.description );
+                itemData.addMember( "usable", i.usable );
+                itemData.addMember( "locked", i.locked );
+                itemData.addMember( "requires_item", i.requiresItem );
+
+                var containsData = new JsonArray();
+                foreach ( string s : i.contains ) {
+                    containsData.addMember( new JsonValue( s ) );
+                }
+                itemData.addMember( "contains", containsData );
+            }
+
+            data.addMember( itemData );
+        }
+
+        var writer = new JsonStyledWriter();
+        storeFile( "save/data/items.json", writer.toString( data ) );
+    }
+
+    private void saveNPCs() {
+        /*
+        "vivienne": {
+            "name": "Vivienne Sinclair",
+            "description": "A jazz singer with a mysterious past.",
+            "personality": "Wary but charming. She hides fear behind wit.",
+            "intro": {
+                "text": "You again. I told you I don't know anything about Lorne.",
+                "choices": [
+                    { "text": "I found this cufflink at your club.", "next": "cufflink" },
+                    { "text": "Come on, Viv. Talk to me.", "next": "soften" }
+                ]
+            },
+            "soften": {
+                "text": "Don't make me regret this. He was in trouble. Real trouble.",
+                "choices": [{ "text": "What kind of trouble?", "next": "trouble" }]
+            },
+            "cufflink": {
+                "condition": "found_cufflink",
+                "text": "...Lorne always wore those. I told him not to come back here.",
+                "choices": [{ "text": "Why?", "next": "warning" }]
+            },
+            "warning": {
+                "text": "Because Leone was watching. And Lorne wasn’t careful.",
+                "set_flag": "vivienne_warned_you"
+            },
+            "trouble": {
+                "text": "He talked about a shipment, something he needed to hide. Maybe Mick knows more.",
+                "set_flag": "sent_to_mick"
+            }
+        }
+        */
+
+        // var data = new JsonArray();
+
+        // var writer = new JsonStyledWriter();
+        // storeFile( "save/data/npcs.json", writer.toString( data ) );
+    }
+
     private void savePlayer() const {
+        /*
+        "location": "detective_office",
+        "inventory": ["detective hat", "music_box", "locker_key"],
+        "flags": ["found_cufflink"]
+        */
+
         var flags = new JsonArray();
         foreach ( string flag : player.flags ) {
             flags.addMember( new JsonValue( flag ) );
@@ -206,39 +289,9 @@ public object World
             }
 
             data.addMember( roomData );
-
-            /*
-            {   // room.exits
-                var exits const = JsonObject r[ "exits" ];
-
-                if ( exits.isMember( "east" ) )  room.exits.insert( "east",  exits[ "east" ].asString() );
-                if ( exits.isMember( "north" ) ) room.exits.insert( "north", exits[ "north" ].asString() );
-                if ( exits.isMember( "south" ) ) room.exits.insert( "south", exits[ "south" ].asString() );
-                if ( exits.isMember( "west" ) )  room.exits.insert( "west",  exits[ "west" ].asString() );
-
-                // foreach ( Pair<string, string> p : room.exits ) {
-                //     print( room.name + ": " + cast<string>( p ) );
-                // }
-            }
-            {   // items
-                foreach ( JsonValue item : JsonArray r[ "items" ] ) {
-                    room.items.push_back( item.asString() );
-
-                    // print( room.name + ": " + item.asString() + " [item]" );
-                }
-            }
-            {   // npcs
-                foreach ( JsonValue npc : JsonArray r[ "npcs" ] ) {
-                    room.npcs.push_back( npc.asString() );
-
-                    // print( room.name + ": " + npc.asString() + " [npc]" );
-                }
-            }
-            */
         }
 
         var writer = new JsonStyledWriter();
         storeFile( "save/data/rooms.json", writer.toString( data ) );
     }
-
 }
