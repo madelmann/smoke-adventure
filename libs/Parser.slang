@@ -84,6 +84,14 @@ public object Parser
 
                     use( item );
                 }
+                // debug only - begin
+                else if ( command == "locations" ) {
+                    locations();
+                }
+                else if ( command == "teleport" ) {
+                    goto( tokenIt++ );
+                }
+                // debug only - end
                 else {
                     print( "Unsupported command '" + command + "'" );
                 }
@@ -140,6 +148,12 @@ public object Parser
     private void inventory() {
         foreach ( string i : player.inventory ) {
             print( "You have a " + i );
+        }
+    }
+
+    private void locations() {
+        foreach ( Room r : world.rooms ) {
+            print( r.id + " | " + r.name + " | " + r.description );
         }
     }
 
@@ -217,7 +231,7 @@ public object Parser
         print( "load" );
         print( "save" );
         print( "quit" );
-        print( "-" );
+        print( "- game -" );
         print( "give" );
         print( "go" );
         print( "inventory" );
@@ -225,6 +239,9 @@ public object Parser
         print( "take" );
         print( "talk" );
         print( "use" );
+        print( "- debug - " );
+        print( "locations" );
+        print( "teleport" );
     }
 
     private void take( string item ) modify {
@@ -238,25 +255,66 @@ public object Parser
             }
         }
 
-        print( "There is no " + item + " in the room." );
+        print( "You can't take that." );
     }
 
     private void use( string item ) modify {
         foreach ( string i : currentRoom.items ) {
             if ( i == item ) {
-                print( "[" + currentRoom.name + "] You are looking at " + i );
+                useItem( item );
                 return;
             }
         }
 
         foreach ( string i : player.inventory ) {
             if ( i == item ) {
-                print( "[Inventory] You are looking at " + i );
+                useItem( item );
                 return;
             }
         }
 
-        print( "There is no " + item + " in the room or your inventory." );
+        print( "You can't do that." );
+    }
+
+    private void useItem( string id ) modify throws {
+        foreach ( Item i : world.items ) {
+            if ( i.id == id ) {
+                if ( !i.usable ) {
+                    print( "You cannot do that." );
+                    return;
+                }
+
+                if ( i.locked ) {
+                    print( "It is locked." );
+                    return;
+                }
+
+                if ( i.requiresItem ) {
+                    if ( !player.inventory.contains( i.requiresItem ) ) {
+                        print( "You are missing an item (" + i.requiresItem + ")" );
+                        return;
+                    }
+                }
+
+                if ( !i.contains.empty() ) {
+                    foreach ( string c : i.contains ) {
+                        print( "It contains a " + c );
+
+                        i.contains.erase( i.contains.indexOf( c ) );
+
+                        currentRoom.items.push_back( c );
+                    }
+                    // foreach ( string c : i.contains ) {
+                    //     i.contains.remove( c );
+                    // }
+                }
+
+                i.usable = false;   // items can only be used once, in order to be re-used they need to be reset by a trigger
+                return;
+            }
+        }
+
+        throw "Item '" + id + "' not found!";
     }
 
     private Player player;

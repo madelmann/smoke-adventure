@@ -160,7 +160,8 @@ public object World
         data.addMember( "flags", flags );
         data.addMember( "inventory", inventory );
 
-        storeFile( "save/data/player.json", data.toString() );
+        var writer = new JsonStyledWriter();
+        storeFile( "save/data/player.json", writer.toString( data ) );
     }
 
     private void saveRooms() const {
@@ -181,9 +182,27 @@ public object World
 
         foreach ( Room r : rooms ) {
             var roomData = new JsonObject() {
-                roomData.addMember( "description", r.description );
                 roomData.addMember( "id", r.id );
                 roomData.addMember( "name", r.name );
+                roomData.addMember( "description", r.description );
+
+                var exits = new JsonObject();
+                foreach ( Pair<string, string> e : r.exits ) {
+                    exits.addMember( e.first, e.second );
+                }
+                roomData.addMember( "exits", exits );
+
+                var itemData = new JsonArray();
+                foreach ( string i : r.items ) {
+                    itemData.addMember( new JsonValue( i ) );
+                }
+                roomData.addMember( "items", itemData );
+
+                var npcData = new JsonArray();
+                foreach ( string n : r.npcs ) {
+                    npcData.addMember( new JsonValue( n ) );
+                }
+                roomData.addMember( "npcs", npcData );
             }
 
             data.addMember( roomData );
@@ -218,7 +237,8 @@ public object World
             */
         }
 
-        storeFile( "save/data/rooms.json", data.toString() );
+        var writer = new JsonStyledWriter();
+        storeFile( "save/data/rooms.json", writer.toString( data ) );
     }
 
 }

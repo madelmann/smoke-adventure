@@ -1,8 +1,8 @@
 {
   "give": ["deliver", "give", "handover", "offer", "present"],
-  "go": ["go", "go to", "move", "run", "walk"],
+  "go"  : ["go", "go to", "move", "run", "walk"],
   "look": ["examine", "inspect", "look", "look around", "look at", "peek", "search", "scan"],
   "take": ["get", "grab", "pick", "pickup", "pick up", "take"],
   "talk": ["ask", "chat", "chat with", "interrogate", "speak", "talk", "talk with"],
-  "use": ["activate", "apply", "combine", "operate", "use"]
+  "use" : ["activate", "apply", "combine", "open", "operate", "use"]
 }
