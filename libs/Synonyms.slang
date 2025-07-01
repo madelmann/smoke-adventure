@@ -42,7 +42,7 @@ public object Synonyms
     }
 
     private void loadSynonyms() modify {
-        var data = JsonObject loadFile( "data/synonyms.json" );
+        var data = JsonObject loadJson( "data/synonyms.json" );
 
         var writer = new JsonStyledWriter();
         // print( writer.toString( data ) );

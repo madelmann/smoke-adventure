@@ -4,8 +4,8 @@
     "name": "The Blue Note",
     "description": "A smoky jazz club with a lingering air of secrets. A piano plays in the corner. Mick polishes glasses behind the counter.",
     "exits": {
-      "west": "office",
-      "south": "docks"
+      "south": "docks",
+      "west": "office"
     },
     "items": ["bourbon"],
     "npcs": ["mick"]
@@ -38,8 +38,8 @@
     "items": ["crowbar"],
     "npcs": [],
     "exits": {
-      "west": "blue_note",
-      "north": "warehouse_entrance"
+      "north": "warehouse_entrance",
+      "west": "blue_note"
     }
   },
   {
@@ -60,8 +60,8 @@
     "items": [],
     "npcs": ["guard"],
     "exits": {
-      "south": "alley",
-      "north": "warehouse"
+      "north": "warehouse",
+      "south": "alley"
     }
   },
   {

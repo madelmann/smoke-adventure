@@ -1,5 +1,5 @@
 {
-  "location": "blue_note",
-  "inventory": ["music_box", "locker_key"],
+  "location": "detective_office",
+  "inventory": ["detective hat", "music_box", "locker_key"],
   "flags": ["found_cufflink"]
 }

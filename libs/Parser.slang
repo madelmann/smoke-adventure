@@ -17,6 +17,8 @@ public object Parser
     }
 
     public void run() modify {
+        print( world.intro );
+
         goto( player.location );
 
         while ( true ) {
@@ -30,10 +32,7 @@ public object Parser
             if ( tokenIt.hasNext() ) {
                 var command = tokenIt++;
 
-                if ( command == "exit" ) {
-                    break;
-                }
-                else if ( command == "give" ) {
+                if ( command == "give" ) {
                     var item = tokenIt++;
                     string to;
                     if ( tokenIt.hasNext() ) {
@@ -56,6 +55,11 @@ public object Parser
                 else if ( command == "inventory" ) {
                     inventory();
                 }
+                else if ( command == "load" ) {
+                    world.load();
+
+                    goto( player.location );
+                }
                 else if ( command == "look" ) {
                     string item;
                     if ( tokenIt.hasNext() ) {
@@ -63,6 +67,12 @@ public object Parser
                     }
 
                     look( item );
+                }
+                else if ( command == "quit" ) {
+                    break;
+                }
+                else if ( command == "save" ) {
+                    world.save();
                 }
                 else if ( command == "take" ) {
                     var item = tokenIt++;
@@ -74,6 +84,11 @@ public object Parser
 
                     use( item );
                 }
+                else {
+                    print( "Unsupported command '" + command + "'" );
+                }
+
+                print( "" );
             }
         }
     }
@@ -115,7 +130,7 @@ public object Parser
 
                 currentRoom = r;
 
-                print( currentRoom.name + ":" );
+                print( "- " + currentRoom.name + " -" );
                 print( currentRoom.description );
                 return;
             }
@@ -142,19 +157,32 @@ public object Parser
                 print( "From here you can go " + p.first );
             }
 
+            foreach ( string n : currentRoom.npcs ) {
+                print( "You see " + n );
+            }
+
             return;
         }
 
+        item = toLower( item );
+
         foreach ( string i : currentRoom.items ) {
             if ( i == item ) {
-                print( "[" + currentRoom.name + "] You are looking at " + i );
+                lookAtItem( item );
+                return;
+            }
+        }
+
+        foreach ( string n : currentRoom.npcs ) {
+            if ( n == item ) {
+                lookAtNPC( item );
                 return;
             }
         }
 
         foreach ( string i : player.inventory ) {
             if ( i == item ) {
-                print( "[Inventory] You are looking at " + i );
+                lookAtItem( item );
                 return;
             }
         }
@@ -162,16 +190,40 @@ public object Parser
         print( "There is no " + item + " in the room or your inventory." );
     }
 
+    private void lookAtItem( string id ) throws {
+        foreach ( Item i : world.items ) {
+            if ( i.id == id ) {
+                print( i.description );
+                return;
+            }
+        }
+
+        throw "Item '" + id + "' not found!";
+    }
+
+    private void lookAtNPC( string id ) throws {
+        foreach ( NPC n : world.npcs ) {
+            if ( n.id == id ) {
+                print( n.description );
+                return;
+            }
+        }
+
+        throw "NPC '" + id + "' not found!";
+    }
+
     private void printHelp() {
         print( "Supported commands:" );
-        print( "" );
-        print( "exit" );
+        print( "load" );
+        print( "save" );
+        print( "quit" );
+        print( "-" );
         print( "give" );
         print( "go" );
-        print( "help" );
         print( "inventory" );
         print( "look" );
         print( "take" );
+        print( "talk" );
         print( "use" );
     }
 

@@ -5,6 +5,7 @@ import System.Collections.Vector;
 
 // project imports
 import Item;
+import NPC;
 import Player;
 import Room;
 import Utils;
@@ -12,21 +13,46 @@ import Utils;
 
 public object World
 {
+    public string intro;
     public Vector<Item> items;
-    //public Vector<NPC> npcs;
+    public Vector<NPC> npcs;
     public Player player;
     public Vector<Room> rooms;
 
     public void Constructor() {
+        items  = new Vector<Item>();
+        npcs   = new Vector<NPC>();
+        player = new Player();
+        rooms  = new Vector<Room>();
+
+        load();
+    }
+
+    public void Destructor() {
+        //save();   // auto save on exit
+    }
+
+    public void load() modify {
+        loadIntro();
         loadItems();
+        loadNPCs();
         loadPlayer();
         loadRooms();
     }
 
-    private void loadItems() modify {
-        var data = JsonArray loadFile( "data/items.json" );
+    public void save() const {
+        savePlayer();
+        saveRooms();
+    }
 
-        items = new Vector<Item>();
+    private void loadIntro() modify {
+        intro = loadFile( "data/intro.txt" );
+    }
+
+    private void loadItems() modify {
+        var data = JsonArray loadJson( "data/items.json" );
+
+        items.clear();
 
         foreach ( JsonObject i : data ) {
             var item = new Item() {
@@ -49,28 +75,36 @@ public object World
         }
     }
 
-    private void loadPlayer() modify {
-        var data = JsonObject loadFile( "data/player.json" );
+    private void loadNPCs() modify {
+        var data = JsonArray loadJson( "data/npcs.json" );
 
-        player = new Player() {
-            {   //player.flags
-                foreach ( JsonValue flag : JsonArray data[ "flags" ] ) {
-                    player.flags.push_back( flag.asString() );
-                }
+        npcs.clear();
+
+        // TODO: implement NPC loading
+    }
+
+    private void loadPlayer() modify {
+        var data = JsonObject loadJson( "data/player.json" );
+
+        {   //player.flags
+            player.flags.clear();
+            foreach ( JsonValue flag : JsonArray data[ "flags" ] ) {
+                player.flags.push_back( flag.asString() );
             }
-            {   //player.inventory
-                foreach ( JsonValue item : JsonArray data[ "inventory" ] ) {
-                    player.inventory.push_back( item.asString() );
-                }
-            }
-            player.location = data[ "location" ].asString();
         }
+        {   //player.inventory
+            player.inventory.clear();
+            foreach ( JsonValue item : JsonArray data[ "inventory" ] ) {
+                player.inventory.push_back( item.asString() );
+            }
+        }
+        player.location = data[ "location" ].asString();
     }
 
     private void loadRooms() modify {
-        var data = loadFile( "data/rooms.json" );
+        var data = loadJson( "data/rooms.json" );
 
-        rooms = new Vector<Room>();
+        rooms.clear();
 
         foreach ( JsonObject r : JsonObject data ) {
             var room = new Room() {
@@ -78,7 +112,7 @@ public object World
                 room.id          = r[ "id" ].asString();
                 room.name        = r[ "name" ].asString();
 
-                {   // room.exits
+                if ( r.isMember( "exits" ) ) {
                     var exits const = JsonObject r[ "exits" ];
 
                     if ( exits.isMember( "east" ) )  room.exits.insert( "east",  exits[ "east" ].asString() );
@@ -90,14 +124,14 @@ public object World
                     //     print( room.name + ": " + cast<string>( p ) );
                     // }
                 }
-                {   // items
+                if ( r.isMember( "items" ) ) {   // items
                     foreach ( JsonValue item : JsonArray r[ "items" ] ) {
                         room.items.push_back( item.asString() );
 
                         // print( room.name + ": " + item.asString() + " [item]" );
                     }
                 }
-                {   // npcs
+                if ( r.isMember( "npcs" ) ) {   // npcs
                     foreach ( JsonValue npc : JsonArray r[ "npcs" ] ) {
                         room.npcs.push_back( npc.asString() );
 
@@ -109,4 +143,82 @@ public object World
             rooms.push_back( room );
         }
     }
+
+    private void savePlayer() const {
+        var flags = new JsonArray();
+        foreach ( string flag : player.flags ) {
+            flags.addMember( new JsonValue( flag ) );
+        }
+
+        var inventory = new JsonArray();
+        foreach ( string item : player.inventory ) {
+            inventory.addMember( new JsonValue( item ) );
+        }
+
+        var data = new JsonObject();
+        data.addMember( "location", player.location );
+        data.addMember( "flags", flags );
+        data.addMember( "inventory", inventory );
+
+        storeFile( "save/data/player.json", data.toString() );
+    }
+
+    private void saveRooms() const {
+        /*
+        "id": "blue_note",
+        "name": "The Blue Note",
+        "description": "Dim lighting. A haze of smoke hangs in the air as a saxophone moans through the static of an old speaker. Red curtains hang heavy behind the stage.",
+        "items": ["cufflink", "music_box"],
+        "npcs": ["vivienne"],
+        "exits": {
+            "east": "alley",
+            "south": "station"
+            }
+        }
+        */
+
+        var data = new JsonArray();
+
+        foreach ( Room r : rooms ) {
+            var roomData = new JsonObject() {
+                roomData.addMember( "description", r.description );
+                roomData.addMember( "id", r.id );
+                roomData.addMember( "name", r.name );
+            }
+
+            data.addMember( roomData );
+
+            /*
+            {   // room.exits
+                var exits const = JsonObject r[ "exits" ];
+
+                if ( exits.isMember( "east" ) )  room.exits.insert( "east",  exits[ "east" ].asString() );
+                if ( exits.isMember( "north" ) ) room.exits.insert( "north", exits[ "north" ].asString() );
+                if ( exits.isMember( "south" ) ) room.exits.insert( "south", exits[ "south" ].asString() );
+                if ( exits.isMember( "west" ) )  room.exits.insert( "west",  exits[ "west" ].asString() );
+
+                // foreach ( Pair<string, string> p : room.exits ) {
+                //     print( room.name + ": " + cast<string>( p ) );
+                // }
+            }
+            {   // items
+                foreach ( JsonValue item : JsonArray r[ "items" ] ) {
+                    room.items.push_back( item.asString() );
+
+                    // print( room.name + ": " + item.asString() + " [item]" );
+                }
+            }
+            {   // npcs
+                foreach ( JsonValue npc : JsonArray r[ "npcs" ] ) {
+                    room.npcs.push_back( npc.asString() );
+
+                    // print( room.name + ": " + npc.asString() + " [npc]" );
+                }
+            }
+            */
+        }
+
+        storeFile( "save/data/rooms.json", data.toString() );
+    }
+
 }
