@@ -3,16 +3,17 @@
 import System.String;
 
 // project imports
+import libs.Synonyms;
 import libs.World;
 
 
 public object Parser
 {
     public void Constructor() {
-        world = new World();
-
-        currentRoom = world.currentRoom;
-        player      = world.player;
+        synonyms = new Synonyms();
+        world    = new World() {
+            player = world.player;
+        }
     }
 
     public void run() modify {
@@ -22,9 +23,7 @@ public object Parser
             cout( "> " );
             var input = new String( cin() );
 
-            // TODO: replace input with synonyms, so that only our commands are returned,
-            //       but make sure to only replace the whole token if a space is following
-            //       or it is at the end of the input
+            synonyms.prepare( input );
 
             // process input
             var tokenIt = input.SplitBy( " " );
@@ -44,9 +43,15 @@ public object Parser
                     give( item, to );
                 }
                 else if ( command == "go" ) {
-                    var direction = tokenIt++;
+                    string direction;
+                    if ( tokenIt.hasNext() ) {
+                        direction = tokenIt++;
+                    }
 
                     go( direction );
+                }
+                else if ( command == "help" ) {
+                    printHelp();
                 }
                 else if ( command == "inventory" ) {
                     inventory();
@@ -72,7 +77,6 @@ public object Parser
             }
         }
     }
-
 
     private void give( string item, string to ) modify {
         if ( !player.inventory.contains( item ) ) {
@@ -113,8 +117,7 @@ public object Parser
 
                 print( currentRoom.name + ":" );
                 print( currentRoom.description );
-
-                break;
+                return;
             }
         }
     }
@@ -145,16 +148,31 @@ public object Parser
         foreach ( string i : currentRoom.items ) {
             if ( i == item ) {
                 print( "[" + currentRoom.name + "] You are looking at " + i );
+                return;
             }
         }
 
         foreach ( string i : player.inventory ) {
             if ( i == item ) {
                 print( "[Inventory] You are looking at " + i );
+                return;
             }
         }
 
         print( "There is no " + item + " in the room or your inventory." );
+    }
+
+    private void printHelp() {
+        print( "Supported commands:" );
+        print( "" );
+        print( "exit" );
+        print( "give" );
+        print( "go" );
+        print( "help" );
+        print( "inventory" );
+        print( "look" );
+        print( "take" );
+        print( "use" );
     }
 
     private void take( string item ) modify {
@@ -175,12 +193,14 @@ public object Parser
         foreach ( string i : currentRoom.items ) {
             if ( i == item ) {
                 print( "[" + currentRoom.name + "] You are looking at " + i );
+                return;
             }
         }
 
         foreach ( string i : player.inventory ) {
             if ( i == item ) {
                 print( "[Inventory] You are looking at " + i );
+                return;
             }
         }
 
@@ -189,5 +209,6 @@ public object Parser
 
     private Player player;
     private Room currentRoom;
+    private Synonyms synonyms;
     private World world;
 }

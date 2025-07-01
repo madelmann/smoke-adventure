@@ -1,39 +1,52 @@
 
 // library imports
 import FileReader;
-import libJson;
 import System.Collections.Vector;
 
 // project imports
+import Item;
 import Player;
 import Room;
+import Utils;
 
 
 public object World
 {
-    public Room currentRoom;
+    public Vector<Item> items;
     //public Vector<NPC> npcs;
     public Player player;
     public Vector<Room> rooms;
 
     public void Constructor() {
-        load();
-    }
-
-    private void load() modify {
+        loadItems();
         loadPlayer();
         loadRooms();
-        loadSynonyms();
     }
 
-    private JsonValue loadFile( string filename ) const {
-        var reader = new JsonReader();
-        var data = reader.parse( new Scanner( filename ).getText() );
+    private void loadItems() modify {
+        var data = JsonArray loadFile( "data/items.json" );
 
-        var writer = new JsonStyledWriter();
-        //print( writer.toString( data ) );
+        items = new Vector<Item>();
 
-        return data;
+        foreach ( JsonObject i : data ) {
+            var item = new Item() {
+                item.description  = i[ "description" ].asString();
+                item.id           = i[ "id" ].asString();
+                item.name         = i[ "name" ].asString();
+                item.usable       = i[ "usable" ].asBool();
+
+                if ( i.isMember( "contains" ) ) {
+                    var iarr const = JsonArray i[ "contains" ];
+                    foreach ( JsonValue s : iarr ) {
+                        item.contains.push_back( s.asString() );
+                    }
+                }
+                if ( i.isMember( "locked" ) )        item.locked       = i[ "locked" ].asBool();
+                if ( i.isMember( "requires_item" ) ) item.requiresItem = i[ "requires_item" ].asString();
+                if ( i.isMember( "use_effect" ) )    item.useEffect    = i[ "use_effect" ].asBool();
+            }
+            items.push_back( item );
+        }
     }
 
     private void loadPlayer() modify {
@@ -95,14 +108,5 @@ public object World
 
             rooms.push_back( room );
         }
-    }
-
-    private void loadSynonyms() modify {
-        var data = loadFile( "data/synonyms.json" );
-
-        var writer = new JsonStyledWriter();
-        //print( writer.toString( data ) );
-
-        // TODO: implement sysnonym loading
     }
 }
