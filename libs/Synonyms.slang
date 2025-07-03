@@ -39,6 +39,9 @@ public object Synonyms
         foreach ( string verb : synUse ) {
             replaced = input.Replace( verb, "use" ) || replaced;
         }
+        foreach ( string verb : synEmpty ) {
+            replaced = input.Replace( verb, "" ) || replaced;
+        }
     }
 
     private void loadSynonyms() modify {
@@ -46,6 +49,11 @@ public object Synonyms
 
         var writer = new JsonStyledWriter();
         // print( writer.toString( data ) );
+
+        synEmpty = new Vector<string>();
+        foreach ( JsonValue verb : JsonArray data[ "" ] ) {
+            synEmpty.push_back( verb.asString() );
+        }
 
         synGive = new Vector<string>();
         foreach ( JsonValue verb : JsonArray data[ "give" ] ) {
@@ -78,6 +86,7 @@ public object Synonyms
         }
     }
 
+    private Vector<string> synEmpty;
     private Vector<string> synGive;
     private Vector<string> synGo;
     private Vector<string> synLook;

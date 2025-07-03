@@ -1,9 +1,10 @@
 [
   {
-    "vivienne": {
-      "name": "Vivienne Sinclair",
-      "description": "A jazz singer with a mysterious past.",
-      "personality": "Wary but charming. She hides fear behind wit.",
+    "id": "vivienne",
+    "name": "Vivienne Sinclair",
+    "description": "A jazz singer with a mysterious past.",
+    "personality": "Wary but charming. She hides fear behind wit.",
+    "dialogue": {
       "intro": {
         "text": "You again. I told you I don't know anything about Lorne.",
         "choices": [
@@ -16,7 +17,8 @@
         "choices": [{ "text": "What kind of trouble?", "next": "trouble" }]
       },
       "cufflink": {
-        "condition": "found_cufflink",
+        "requires_item": "cufflink",
+        "requires_flag": "found_cufflink",
         "text": "...Lorne always wore those. I told him not to come back here.",
         "choices": [{ "text": "Why?", "next": "warning" }]
       },
@@ -31,10 +33,11 @@
     }
   },
   {
-    "mick": {
-      "name": "Mick",
-      "description": "A gruff, loyal locker attendant with a gruff personality.",
-      "personality": "Gruff, loyal, slow to trust.",
+    "id": "mick",
+    "name": "Mick",
+    "description": "A gruff, loyal locker attendant with a gruff personality.",
+    "personality": "Gruff, loyal, slow to trust.",
+    "dialogue": {
       "intro": {
         "text": "You ain't supposed to be back here.",
         "choices": [
@@ -43,12 +46,12 @@
         ]
       },
       "trust": {
-        "condition": "sent_to_mick",
+        "requires_flag": "sent_to_mick",
         "text": "...Alright. If Viv vouched, maybe you're okay.",
         "set_flag": "mick_trusts_you"
       },
       "locker": {
-        "condition": "mick_trusts_you",
+        "requires_flag": "mick_trusts_you",
         "text": "Here, take the key. I never saw you.",
         "set_flag": "has_locker_key",
         "give_item": "locker_key"
@@ -56,10 +59,11 @@
     }
   },
   {
-    "leone": {
-      "name": "Leone Carro",
-      "description": "A calm, dangerous smuggler with a cold smile.",
-      "personality": "Calm, dangerous, cold.",
+    "id": "leone",
+    "name": "Leone Carro",
+    "description": "A calm, dangerous smuggler with a cold smile.",
+    "personality": "Calm, dangerous, cold.",
+    "dialogue": {
       "intro": {
         "text": "You walked into the wrong end of town, detective.",
         "choices": [
@@ -76,7 +80,7 @@
         "set_flag": "confirmed_lorne_dead"
       },
       "bluff": {
-        "condition": "has_ledger",
+        "requires_flag": "has_ledger",
         "text": "...You’ve been poking around too much. That ledger’s going to cost you.",
         "set_flag": "trigger_final_scene"
       }

@@ -24,4 +24,13 @@ public object Event
     public Vector<Effect> effects;
     public string id; // trigger
     public string room;
+
+    public void Constructor() {
+        condition = new Vector<Condition>();
+        effects   = new Vector<Effect>();
+    }
+
+    public bool operator==( string id_ ) const {
+        return id == id_;
+    }
 }

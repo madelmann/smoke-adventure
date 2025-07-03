@@ -29,4 +29,8 @@ public object Item
     public void Constructor() {
         contains = new Vector<string>();
     }
+
+    public bool operator==( string id_ ) const {
+        return id == id_;
+    }
 }

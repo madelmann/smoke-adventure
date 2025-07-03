@@ -79,6 +79,14 @@ public object Parser
 
                     take( item );
                 }
+                else if ( command == "talk" ) {
+                    string item;
+                    if ( tokenIt.hasNext() ) {
+                        item = tokenIt++;
+                    }
+
+                    talk( item );
+                }
                 else if ( command == "use" ) {
                     string item;
                     if ( tokenIt.hasNext() ) {
@@ -110,9 +118,9 @@ public object Parser
             return;
         }
 
-        foreach ( string n : currentRoom.npcs ) {
-            if ( n == to ) {
-                print( "You are giving " + item + " to " + n );
+        foreach ( string npc : currentRoom.npcs ) {
+            if ( npc == to ) {
+                print( "You are giving " + item + " to " + npc );
 
                 player.inventory.erase( player.inventory.indexOf( item ) );
 
@@ -135,11 +143,11 @@ public object Parser
     }
 
     private void goto( string location ) modify {
-        foreach ( Room r : world.rooms ) {
-            if ( r == location ) {
+        foreach ( Room room : world.rooms ) {
+            if ( room == location ) {
                 player.location = location;
 
-                currentRoom = r;
+                currentRoom = room;
 
                 print( "- " + currentRoom.name + " -" );
                 print( currentRoom.description );
@@ -166,6 +174,10 @@ public object Parser
             print( currentRoom.description );
             print( "" );
 
+            foreach ( string n : currentRoom.npcs ) {
+                print( "You see " + n );
+            }
+
             foreach ( string i : currentRoom.items ) {
                 print( "You see a " + i );
             }
@@ -174,14 +186,17 @@ public object Parser
                 print( "From here you can go " + p.first );
             }
 
-            foreach ( string n : currentRoom.npcs ) {
-                print( "You see " + n );
-            }
-
             return;
         }
 
         item = toLower( item );
+
+        foreach ( string i : player.inventory ) {
+            if ( i == item ) {
+                lookAtItem( item );
+                return;
+            }
+        }
 
         foreach ( string i : currentRoom.items ) {
             if ( i == item ) {
@@ -193,13 +208,6 @@ public object Parser
         foreach ( string n : currentRoom.npcs ) {
             if ( n == item ) {
                 lookAtNPC( item );
-                return;
-            }
-        }
-
-        foreach ( string i : player.inventory ) {
-            if ( i == item ) {
-                lookAtItem( item );
                 return;
             }
         }
@@ -259,6 +267,17 @@ public object Parser
         }
 
         print( "You can't take that." );
+    }
+
+    private void talk( string id ) modify {
+        foreach ( string n : currentRoom.npcs ) {
+            if ( n == id ) {
+                lookAtNPC( id );
+                return;
+            }
+        }
+
+        print( "You can't do that." );
     }
 
     private void use( string item ) modify {
