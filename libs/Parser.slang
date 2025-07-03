@@ -32,8 +32,12 @@ public object Parser
             if ( tokenIt.hasNext() ) {
                 var command = tokenIt++;
 
-                if ( command == "give" ) {
+                if ( command == "debug" ) {
+                    printDebug();
+                }
+                else if ( command == "give" ) {
                     var item = tokenIt++;
+
                     string to;
                     if ( tokenIt.hasNext() ) {
                         to = tokenIt++;
@@ -93,7 +97,12 @@ public object Parser
                         item = tokenIt++;
                     }
 
-                    use( item );
+                    string with;
+                    if ( tokenIt.hasNext() ) {
+                        with = tokenIt++;
+                    }
+
+                    use( item, with );
                 }
                 // debug only - begin
                 else if ( command == "locations" ) {
@@ -143,11 +152,18 @@ public object Parser
     }
 
     private void goto( string location ) modify {
-        foreach ( Room room : world.rooms ) {
-            if ( room == location ) {
+        foreach ( Room r : world.rooms ) {
+            if ( r == location ) {
+                var event = world.getEvent( "enter_room", "", r.id );
+                if ( event && ( event.repeat || !event.triggered ) ) {
+                    event.triggered = true;
+
+                    print( event.text );
+                }
+
                 player.location = location;
 
-                currentRoom = room;
+                currentRoom = r;
 
                 print( "- " + currentRoom.name + " -" );
                 print( currentRoom.description );
@@ -219,6 +235,14 @@ public object Parser
         foreach ( Item i : world.items ) {
             if ( i.id == id ) {
                 print( i.description );
+
+                var event = world.getEvent( "examine", i.id, "" );
+                if ( event && ( event.repeat || !event.triggered ) ) {
+                    event.triggered = true;
+
+                    print( event.text );
+                }
+
                 return;
             }
         }
@@ -237,6 +261,15 @@ public object Parser
         throw "NPC '" + id + "' not found!";
     }
 
+    private void printDebug() {
+        foreach ( string flag : player.flags ) {
+            print( "Flag: " + flag );
+        }
+        foreach ( string item : player.inventory ) {
+            print( "Item: " + item );
+        }
+    }
+
     private void printHelp() {
         print( "Supported commands:" );
         print( "load" );
@@ -251,6 +284,7 @@ public object Parser
         print( "talk" );
         print( "use" );
         print( "- debug - " );
+        print( "debug" );
         print( "locations" );
         print( "teleport" );
     }
@@ -280,7 +314,7 @@ public object Parser
         print( "You can't do that." );
     }
 
-    private void use( string item ) modify {
+    private void use( string item, string with ) modify {
         foreach ( string i : currentRoom.items ) {
             if ( i == item ) {
                 useItem( item );

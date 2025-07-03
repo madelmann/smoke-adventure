@@ -1,13 +1,44 @@
-{
-  "trigger": "enter_room",
-  "room": "throne_room",
-  "conditions": {
-    "flags": {
-      "door_unlocked": true
+[
+    {
+        "id": "enter_room",
+        "room": "station",
+        "repeat": true,
+        "effect": {
+            "text": "A train whistles in the distance.",
+            "flag": [],
+            "unflag": []
+        },
+        "require": {
+            "flag": [],
+            "item": []
+        }
+    },
+    {
+        "id": "examine",
+        "item": "music_box",
+        "repeat": true,
+        "effect": {
+            "text": "You see that it can be opened.",
+            "flag": [],
+            "unflag": []
+        },
+        "require": {
+            "flag": [],
+            "item": []
+        }
+    },
+    {
+        "id": "enter_room",
+        "room": "blue_note",
+        "repeat": false,
+        "effect": {
+            "text": "The king greets you warmly.",
+            "flag": ["talked_to_king"],
+            "unflag": ["not_talked_to_king"]
+        },
+        "require": {
+            "flag": ["door_unlocked"],
+            "item": []
+        }
     }
-  },
-  "effect": {
-    "text": "The king greets you warmly.",
-    "set_flag": "talked_to_king"
-  }
-}
+]

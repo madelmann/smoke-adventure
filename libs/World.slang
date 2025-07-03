@@ -4,6 +4,7 @@ import FileReader;
 import System.Collections.Vector;
 
 // project imports
+import Event;
 import Item;
 import NPC;
 import Player;
@@ -13,6 +14,7 @@ import Utils;
 
 public object World
 {
+    public Vector<Event> events;
     public string intro;
     public Vector<Item> items;
     public Vector<NPC> npcs;
@@ -20,6 +22,7 @@ public object World
     public Vector<Room> rooms;
 
     public void Constructor() {
+        events = new Vector<Event>();
         items  = new Vector<Item>();
         npcs   = new Vector<NPC>();
         player = new Player();
@@ -32,7 +35,16 @@ public object World
         //save();   // auto save on exit
     }
 
+    Event getEvent( string id, string item, string room ) const {
+        foreach ( Event e : events ) {
+            if ( e.id == id && e.item == item && e.room == room ) {
+                return e;
+            }
+        }
+    }
+
     public void load() modify {
+        loadEvents();
         loadIntro();
         loadItems();
         loadNPCs();
@@ -51,6 +63,58 @@ public object World
         intro = loadFile( "data/intro.txt" );
     }
 
+    private void loadEvents() modify {
+        var data = JsonArray loadJson( "data/events.json" );
+
+        events.clear();
+
+        /*
+        "id": "enter_room",
+        "room": "throne_room",
+        "repeat": true,
+        "effect": {
+            "text": "The king greets you warmly.",
+            "set_flag": ["talked_to_king"],
+            "unset_flag": ["not_talked_to_king"]
+        },
+        "require": {
+            "flag": ["door_unlocked"],
+            "item": []
+        }
+        */
+        foreach ( JsonObject e : data ) {
+            var event = new Event() {
+                event.id     = e[ "id" ].asString();
+                event.repeat = e[ "repeat" ].asBool();
+
+                if ( e.isMember( "effect" ) ) {
+                    var effect const = JsonObject e[ "effect" ];
+                    event.text = effect[ "text" ].asString();
+
+                    foreach ( JsonValue f : JsonArray effect[ "flag" ] ) {
+                        event.flag.push_back( f.asString() );
+                    }
+                    foreach ( JsonValue i : JsonArray effect[ "unflag" ] ) {
+                        event.unflag.push_back( i.asString() );
+                    }
+                }
+                if ( e.isMember( "item" ) ) event.item = e[ "item" ].asString();
+                if ( e.isMember( "require" ) ) {
+                    var require const = JsonObject e[ "require" ];
+
+                    foreach ( JsonValue f : JsonArray require[ "flag" ] ) {
+                        event.requireFlag.push_back( f.asString() );
+                    }
+                    foreach ( JsonValue i : JsonArray require[ "item" ] ) {
+                        event.requireItem.push_back( i.asString() );
+                    }
+                }
+                if ( e.isMember( "room" ) ) event.room = e[ "room" ].asString();
+            }
+            events.push_back( event );
+        }
+    }
+
     private void loadItems() modify {
         var data = JsonArray loadJson( "data/items.json" );
 
@@ -64,8 +128,7 @@ public object World
                 item.usable       = i[ "usable" ].asBool();
 
                 if ( i.isMember( "contains" ) ) {
-                    var iarr const = JsonArray i[ "contains" ];
-                    foreach ( JsonValue s : iarr ) {
+                    foreach ( JsonValue s : JsonArray i[ "contains" ] ) {
                         item.contains.push_back( s.asString() );
                     }
                 }

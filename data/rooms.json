@@ -1,34 +1,23 @@
 [
   {
-    "id": "bar",
-    "name": "The Blue Note",
-    "description": "A smoky jazz club with a lingering air of secrets. A piano plays in the corner. Mick polishes glasses behind the counter.",
-    "exits": {
-      "south": "docks",
-      "west": "office"
-    },
-    "items": ["bourbon"],
-    "npcs": ["mick"]
-  },
-  {
     "id": "detective_office",
     "name": "The Detective's Office",
     "description": "The blinds cast crooked shadows across a desk littered with old case files and empty glasses. Rain drums steadily against the windowpane.",
     "items": ["whisky_bottle", "case_file"],
     "npcs": [],
     "exits": {
-      "south": "hallway"
+      "north": "hallway"
     }
   },
   {
     "id": "blue_note",
     "name": "The Blue Note",
     "description": "Dim lighting. A haze of smoke hangs in the air as a saxophone moans through the static of an old speaker. Red curtains hang heavy behind the stage.",
-    "items": ["cufflink", "music_box"],
+    "items": ["cufflink", "music_box","bourbon"],
     "npcs": ["vivienne"],
     "exits": {
-      "east": "alley",
-      "south": "station"
+      "south": "docks",
+      "west": "alley"
     }
   },
   {
@@ -38,8 +27,9 @@
     "items": ["crowbar"],
     "npcs": [],
     "exits": {
+      "east": "blue_note",
       "north": "warehouse_entrance",
-      "west": "blue_note"
+      "south": "docks"
     }
   },
   {
@@ -50,7 +40,7 @@
     "npcs": ["mick"],
     "exits": {
       "north": "blue_note",
-      "west": "dock"
+      "west": "docks"
     }
   },
   {
@@ -75,13 +65,14 @@
     }
   },
   {
-    "id": "dock",
+    "id": "docks",
     "name": "The Docks",
     "description": "Water laps quietly against rotting piers. A ship sits anchored in darkness. Somewhere, a gull screams.",
     "items": ["boat_manifest"],
     "npcs": [],
     "exits": {
-      "east": "station"
+      "east": "station",
+      "north": "alley"
     }
   },
   {
@@ -91,8 +82,8 @@
     "items": [],
     "npcs": [],
     "exits": {
-      "north": "detective_office",
-      "south": "street"
+      "north": "street",
+      "south": "detective_office"
     }
   },
   {
@@ -102,7 +93,8 @@
     "items": [],
     "npcs": [],
     "exits": {
-      "north": "hallway"
+      "east": "alley",
+      "south": "hallway"
     }
   }
 ]

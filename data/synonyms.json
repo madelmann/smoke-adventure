@@ -4,6 +4,6 @@
   "look": ["examine", "inspect", "look", "look around", "look at", "peek", "peek at", "search", "scan"],
   "take": ["get", "grab", "pick", "pickup", "pick up", "take"],
   "talk": ["ask", "chat", "chat with", "interrogate", "speak", "speak with", "talk", "talk with"],
-  "use" : ["activate", "apply", "combine", "open", "operate", "use"],
+  "use" : ["activate", "apply", "combine", "open", "operate", "use", "use with"],
   "": ["at ", "the ", "to ", "with "]
 }
