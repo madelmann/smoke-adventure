@@ -19,7 +19,7 @@
         "repeat": true,
         "effect": {
             "text": "You see that it can be opened.",
-            "flag": [],
+            "flag": ["music_box_examined"],
             "unflag": []
         },
         "require": {

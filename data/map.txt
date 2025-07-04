@@ -1,0 +1,9 @@
+                   warehouse
+                       ^
+                   warehouse_entrance
+                       ^
+street          <    alley    > blue_note
+   ^                   v           ^
+hallway              docks    > station
+   ^ 
+detective_office

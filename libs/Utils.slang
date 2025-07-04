@@ -33,3 +33,11 @@ private void storeFile( string filename, string content ) const {
     file.write( content );
 }
 
+
+private namespace {
+
+    void debug( string message ) {
+        print( "DEBUG: " + message );
+    }
+
+}

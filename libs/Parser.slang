@@ -32,10 +32,7 @@ public object Parser
             if ( tokenIt.hasNext() ) {
                 var command = tokenIt++;
 
-                if ( command == "debug" ) {
-                    printDebug();
-                }
-                else if ( command == "give" ) {
+                if ( command == "give" ) {
                     var item = tokenIt++;
 
                     string to;
@@ -105,8 +102,17 @@ public object Parser
                     use( item, with );
                 }
                 // debug only - begin
-                else if ( command == "locations" ) {
-                    locations();
+                else if ( command == "debug" ) {
+                    printDebug();
+                }
+                else if ( command == "items" ) {
+                    items();
+                }
+                else if ( command == "npcs" ) {
+                    npcs();
+                }
+                else if ( command == "rooms" ) {
+                    rooms();
                 }
                 else if ( command == "teleport" ) {
                     goto( tokenIt++ );
@@ -119,6 +125,37 @@ public object Parser
                 print( "" );
             }
         }
+    }
+
+    private void executeEvent( Event event ) modify {
+        if ( !event || ( event.triggered && !event.repeat ) ) {
+            return;
+        }
+
+        foreach ( string flag : event.requireFlag ) {
+            if ( !player.flags.contains( flag ) ) {
+                debug( "Player does not have required flag '" + flag + "'" );
+                return;
+            }
+        }
+
+        foreach ( string item : event.requireItem ) {
+            if ( !player.inventory.contains( item ) ) {
+                debug( "Player does not have required item '" + item + "'" );
+                return;
+            }
+        }
+
+        event.triggered = true;
+
+        foreach ( string flag : event.flag ) {
+            player.flags.push_back( flag );
+        }
+        foreach ( string flag : event.unflag ) {
+            player.flags.erase( player.flags.indexOf( flag ) );
+        }
+
+        print( event.text );
     }
 
     private void give( string item, string to ) modify {
@@ -141,8 +178,6 @@ public object Parser
 
     private void go( string direction ) modify {
         foreach ( Pair<string, string> p : currentRoom.exits ) {
-            //print( currentRoom.name + ": " + p.first + " => " + p.second );
-
             if ( p.first == direction ) {
                 return goto( p.second );
             }
@@ -154,20 +189,15 @@ public object Parser
     private void goto( string location ) modify {
         foreach ( Room r : world.rooms ) {
             if ( r == location ) {
-                var event = world.getEvent( "enter_room", "", r.id );
-                if ( event && ( event.repeat || !event.triggered ) ) {
-                    event.triggered = true;
-
-                    print( event.text );
-                }
-
                 player.location = location;
 
                 currentRoom = r;
 
                 print( "- " + currentRoom.name + " -" );
                 print( currentRoom.description );
-                return;
+                print( "" );
+
+                return executeEvent( world.getEvent( "enter_room", "", r.id ) );
             }
         }
     }
@@ -178,7 +208,13 @@ public object Parser
         }
     }
 
-    private void locations() {
+    private void items() {
+        foreach ( Item i : world.items ) {
+            print( i.id + " | " + i.name + " | " + i.description );
+        }
+    }
+
+    private void rooms() {
         foreach ( Room r : world.rooms ) {
             print( r.id + " | " + r.name + " | " + r.description );
         }
@@ -231,34 +267,22 @@ public object Parser
         print( "There is no " + item + " in the room or your inventory." );
     }
 
-    private void lookAtItem( string id ) throws {
-        foreach ( Item i : world.items ) {
-            if ( i.id == id ) {
-                print( i.description );
+    private void lookAtItem( string id ) {
+        var item = world.getItem( id );
 
-                var event = world.getEvent( "examine", i.id, "" );
-                if ( event && ( event.repeat || !event.triggered ) ) {
-                    event.triggered = true;
-
-                    print( event.text );
-                }
-
-                return;
-            }
-        }
-
-        throw "Item '" + id + "' not found!";
+        print( item.description );
     }
 
-    private void lookAtNPC( string id ) throws {
-        foreach ( NPC n : world.npcs ) {
-            if ( n.id == id ) {
-                print( n.description );
-                return;
-            }
-        }
+    private void lookAtNPC( string id ) {
+        var npc = world.getNPC( id );
 
-        throw "NPC '" + id + "' not found!";
+        print( npc.description );
+    }
+
+    private void npcs() {
+        foreach ( NPC n : world.npcs ) {
+            print( n.id + " | " + n.name + " | " + n.description );
+        }
     }
 
     private void printDebug() {
@@ -285,14 +309,16 @@ public object Parser
         print( "use" );
         print( "- debug - " );
         print( "debug" );
-        print( "locations" );
+        print( "items" );
+        print( "npcs" );
+        print( "rooms" );
         print( "teleport" );
     }
 
     private void take( string item ) modify {
         foreach ( string i : currentRoom.items ) {
             if ( i == item ) {
-                print( "[" + currentRoom.name + "] You are picking up " + i );
+                print( "You are picking up " + i );
 
                 currentRoom.items.erase( currentRoom.items.indexOf( item ) );
                 player.inventory.push_back( i );
@@ -347,10 +373,12 @@ public object Parser
 
                 if ( i.requiresItem ) {
                     if ( !player.inventory.contains( i.requiresItem ) ) {
-                        print( "You are missing an item (" + i.requiresItem + ")" );
+                        debug( "You are missing an item (" + i.requiresItem + ")" );
                         return;
                     }
                 }
+
+                executeEvent( world.getEvent( "examine", i.id, "" ) );
 
                 if ( !i.contains.empty() ) {
                     foreach ( string c : i.contains ) {

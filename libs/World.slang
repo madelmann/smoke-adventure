@@ -1,6 +1,8 @@
 
 // library imports
 import FileReader;
+//import libSQLite3;
+//import libSQLite3.Exceptions;
 import System.Collections.Vector;
 
 // project imports
@@ -38,9 +40,43 @@ public object World
     Event getEvent( string id, string item, string room ) const {
         foreach ( Event e : events ) {
             if ( e.id == id && e.item == item && e.room == room ) {
+                // print( "Event '" + id + "', '" + item + "', '" + room + "' triggered." );
                 return e;
             }
         }
+
+        // print( "Event '" + id + "', '" + item + "', '" + room + "' not found!" );
+        return Event null;
+    }
+
+    Item getItem( string id ) const throws {
+        foreach ( Item i : items ) {
+            if ( i.id == id ) {
+                return i;
+            }
+        }
+
+        throw "Item with id " + id + " not found!";
+    }
+
+    NPC getNPC( string id ) const throws {
+        foreach ( NPC n : npcs ) {
+            if ( n.id == id ) {
+                return n;
+            }
+        }
+
+        throw "NPC with id " + id + " not found!";
+    }
+
+    Room getRoom( string id ) const throws {
+        foreach ( Room r : rooms ) {
+            if ( r.id == id ) {
+                return r;
+            }
+        }
+
+        throw "Room with id " + id + " not found!";
     }
 
     public void load() modify {
@@ -50,6 +86,17 @@ public object World
         loadNPCs();
         loadPlayer();
         loadRooms();
+
+        /*
+        var db = new Sqlite3Database( "data.db" );
+        var result = db.exec( "SELECT name, type FROM sqlite_master" );
+
+        try {
+            print( "ErrorCode: " + db.errCode() );
+            print( "ErrroMessage: " + db.errMsg() );
+            print( "Results(" + result.Rows.size() + ") = " + cast<string>( result ) );
+        }
+        */
     }
 
     public void save() const {
