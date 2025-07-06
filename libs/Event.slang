@@ -22,22 +22,22 @@
 
 public object Event
 {
-    public Vector<string> flag;
+    public Vector<string> effectFlag;
+    public string effectText;
+    public Vector<string> effectUnflag;
     public string id; // trigger
     public string item;
     public bool repeat;
     public Vector<string> requireFlag;
     public Vector<string> requireItem;
     public string room;
-    public string text;
     public bool triggered;
-    public Vector<string> unflag;
 
     public void Constructor() {
-        flag        = new Vector<string>();
-        requireFlag = new Vector<string>();
-        requireItem = new Vector<string>();
-        unflag      = new Vector<string>();
+        effectFlag   = new Vector<string>();
+        effectUnflag = new Vector<string>();
+        requireFlag  = new Vector<string>();
+        requireItem  = new Vector<string>();
     }
 
     public bool operator==( string id_ ) const {

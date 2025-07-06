@@ -100,6 +100,7 @@ public object World
     }
 
     public void save() const {
+        saveEvents();
         saveItems();
         saveNPCs();
         savePlayer();
@@ -136,13 +137,13 @@ public object World
 
                 if ( e.isMember( "effect" ) ) {
                     var effect const = JsonObject e[ "effect" ];
-                    event.text = effect[ "text" ].asString();
+                    event.effectText = effect[ "text" ].asString();
 
                     foreach ( JsonValue f : JsonArray effect[ "flag" ] ) {
-                        event.flag.push_back( f.asString() );
+                        event.effectFlag.push_back( f.asString() );
                     }
                     foreach ( JsonValue i : JsonArray effect[ "unflag" ] ) {
-                        event.unflag.push_back( i.asString() );
+                        event.effectUnflag.push_back( i.asString() );
                     }
                 }
                 if ( e.isMember( "item" ) ) event.item = e[ "item" ].asString();
@@ -156,7 +157,8 @@ public object World
                         event.requireItem.push_back( i.asString() );
                     }
                 }
-                if ( e.isMember( "room" ) ) event.room = e[ "room" ].asString();
+                if ( e.isMember( "room" ) )      event.room = e[ "room" ].asString();
+                if ( e.isMember( "triggered" ) ) event.item = e[ "triggered" ].asBool();
             }
             events.push_back( event );
         }
@@ -266,6 +268,71 @@ public object World
         }
     }
 
+    private void saveEvents() {
+        /*
+        "id": "enter_room",
+        "room": "station",
+        "repeat": true,
+        "effect": {
+            "text": "A train whistles in the distance.",
+            "flag": [],
+            "unflag": []
+        },
+        "require": {
+            "flag": [],
+            "item": []
+        }
+        */
+
+        var data = new JsonArray();
+
+        foreach ( Event e : events ) {
+            var event = new JsonObject() {
+                event.addMember( "id", e.id );
+                event.addMember( "repeat", e.repeat );
+                event.addMember( "room", e.room );
+                event.addMember( "triggered", e.triggered );
+
+                var effect = new JsonObject() {
+                    effect.addMember( "text", e.effectText );
+
+                    var flagArr = new JsonArray();
+                    foreach ( string token : e.effectFlag ) {
+                        flagArr.addMember( new JsonValue( token ) );
+                    }
+                    effect.addMember( "flag", flagArr );
+
+                    var unflagArr = new JsonArray();
+                    foreach ( string token : e.effectUnflag ) {
+                        unflagArr.addMember( new JsonValue( token ) );
+                    }
+                    effect.addMember( "unflag", unflagArr );
+                }
+                event.addMember( "effect", effect );
+
+                var require = new JsonObject() {
+                    var flagArr = new JsonArray();
+                    foreach ( string token : e.requireFlag ) {
+                        flagArr.addMember( new JsonValue( token ) );
+                    }
+                    require.addMember( "flag", flagArr );
+
+                    var itemArr = new JsonArray();
+                    foreach ( string token : e.requireItem ) {
+                        itemArr.addMember( new JsonValue( token ) );
+                    }
+                    require.addMember( "item", itemArr );
+                }
+                event.addMember( "require", require );
+            }
+
+            data.addMember( event );
+        }
+
+        var writer = new JsonStyledWriter();
+        storeFile( "save/data/events.json", writer.toString( data ) );
+    }
+
     private void saveItems() {
         /*
         "id": "locker",
@@ -280,22 +347,22 @@ public object World
         var data = new JsonArray();
 
         foreach ( Item i : items ) {
-            var itemData = new JsonObject() {
-                itemData.addMember( "id", i.id );
-                itemData.addMember( "name", i.name );
-                itemData.addMember( "description", i.description );
-                itemData.addMember( "usable", i.usable );
-                itemData.addMember( "locked", i.locked );
-                itemData.addMember( "requires_item", i.requiresItem );
+            var item = new JsonObject() {
+                item.addMember( "id", i.id );
+                item.addMember( "name", i.name );
+                item.addMember( "description", i.description );
+                item.addMember( "usable", i.usable );
+                item.addMember( "locked", i.locked );
+                item.addMember( "requires_item", i.requiresItem );
 
                 var containsData = new JsonArray();
                 foreach ( string s : i.contains ) {
                     containsData.addMember( new JsonValue( s ) );
                 }
-                itemData.addMember( "contains", containsData );
+                item.addMember( "contains", containsData );
             }
 
-            data.addMember( itemData );
+            data.addMember( item );
         }
 
         var writer = new JsonStyledWriter();

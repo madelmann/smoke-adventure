@@ -148,14 +148,14 @@ public object Parser
 
         event.triggered = true;
 
-        foreach ( string flag : event.flag ) {
+        foreach ( string flag : event.effectFlag ) {
             player.flags.push_back( flag );
         }
-        foreach ( string flag : event.unflag ) {
+        foreach ( string flag : event.effectUnflag ) {
             player.flags.erase( player.flags.indexOf( flag ) );
         }
 
-        print( event.text );
+        print( event.effectText );
     }
 
     private void give( string item, string to ) modify {
