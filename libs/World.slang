@@ -194,16 +194,8 @@ public object World
 
         npcs.clear();
 
-        foreach ( JsonObject n : data ) {
-            var npc = new NPC() {
-                npc.description  = n[ "description" ].asString();
-                npc.id           = n[ "id" ].asString();
-                npc.name         = n[ "name" ].asString();
-                npc.personality  = n[ "personality" ].asString();
-
-                // TODO: load dialogue
-            }
-            npcs.push_back( npc );
+        foreach ( JsonValue n : data ) {
+            npcs.push_back( NPC.parse( n ) );
         }
     }
 

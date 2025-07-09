@@ -1,6 +1,7 @@
 
 // library imports
 import libJson.Object;
+import System.Collections.Map;
 
 // project imports
 
@@ -32,19 +33,71 @@ import libJson.Object;
 }
 */
 
+public object Dialogue
+{
+    public Map<string, string> choices;     // text, nextDialogue
+    public string requireFlag;
+    public string setFlag;
+    public string setItem;
+    public string text;
+
+    public static Dialogue parse( JsonValue data ) modify {
+        var dialogue = new Dialogue() {
+            var d = JsonObject data;
+
+            dialogue.text = d[ "text" ].asString();
+
+            if ( d.isMember( "require_flag" ) ) dialogue.requireFlag = d[ "require_flag" ].asString();
+            if ( d.isMember( "set_flag" ) )     dialogue.setFlag     = d[ "set_flag" ].asString();
+            if ( d.isMember( "set_item" ) )     dialogue.setItem     = d[ "set_item" ].asString();
+        }
+
+        return dialogue;
+    }
+
+    public void Constructor() {
+        choices = new Map<string, string>();
+    }
+
+    public string =operator( string ) const {
+        return "{ {{text}}, {{requireFlag}}, {{setFlag}}, {{setItem}} }";
+    }
+}
+
 public object NPC
 {
     public string description;
-    public JsonObject dialogue;
+    public Map<string, Dialogue> dialogue;
     public string id;
     public string name;
     public string personality;
 
+    public static NPC parse( JsonValue data ) modify {
+        var npc = new NPC() {
+            var d = JsonObject data;
+
+            npc.description  = d[ "description" ].asString();
+            npc.id           = d[ "id" ].asString();
+            npc.name         = d[ "name" ].asString();
+            npc.personality  = d[ "personality" ].asString();
+
+            foreach ( Pair<string, JsonValue> p : JsonObject d[ "dialogue" ] ) {
+                npc.dialogue.insert( p.first, Dialogue.parse( p.second ) );
+            }
+        }
+
+        return npc;
+    }
+
     public void Constructor() {
-        dialogue = new JsonObject();
+        dialogue = new Map<string, Dialogue>();
     }
 
     public bool operator==( string id_ ) const {
         return id == id_;
+    }
+
+    public string =operator( string ) const {
+        return "{ {{id}}, {{name}}, {{description}} }";
     }
 }
