@@ -347,15 +347,58 @@ public object Parser
         print( "You can't take that." );
     }
 
-    private void talk( string id ) modify {
+    private void talk( string npc ) modify {
         foreach ( string n : currentRoom.npcs ) {
-            if ( n == id ) {
-                lookAtNPC( id );
+            if ( n == npc ) {
+                talkWith( npc );
                 return;
             }
         }
 
         print( "You can't do that." );
+    }
+
+    private void talkWith( string id ) modify throws {
+        var npc = world.getNPC( id );
+        if ( npc ) {
+            // print( cast<string>( npc ) );
+
+            return dialogue( npc, "intro" );
+        }
+
+        throw "NPC '" + id + "' not found!";
+    }
+
+    private void dialogue( NPC npc, string entry ) modify {
+        foreach ( Pair<string, Dialogue> p : npc.dialogue ) {
+            if ( p.first == entry ) {
+                if ( p.second.setFlag ) {
+                    player.flags.push_back( p.second.setFlag );
+                }
+                if ( p.second.setItem ) {
+                    player.inventory.push_back( p.second.setItem );
+                }
+
+                print( p.second.text );
+
+                if ( p.second.choices.size() ) {
+                    foreach ( Pair<int, Choice> c : p.second.choices ) {
+                        print( "" + ( c.first + 1 ) + ": " + c.second.text );
+                    }
+
+                    write( "Say: " );
+                    var choiceIdx = cast<int>( cin() ) - 1;
+
+                    foreach ( Pair<int, Choice> c : p.second.choices ) {
+                        if ( c.first == choiceIdx ) {
+                            return dialogue( npc, c.second.next );
+                        }
+                    }
+                }
+
+                return;
+            }
+        }
     }
 
     private void use( string item, string with ) modify {

@@ -33,9 +33,19 @@ import System.Collections.Map;
 }
 */
 
+public object Choice
+{
+    public string next;
+    public string text;
+
+    public string =operator( string ) const {
+        return text + " | " + next;
+    }
+}
+
 public object Dialogue
 {
-    public Map<string, string> choices;     // text, nextDialogue
+    public Map<int, Choice> choices;     // text, nextDialogue
     public string requireFlag;
     public string setFlag;
     public string setItem;
@@ -48,12 +58,13 @@ public object Dialogue
             dialogue.text = d[ "text" ].asString();
 
             if ( d.isMember( "choices" ) ) {
-                dialogue.choices = new Map<string, string>();
-
                 foreach ( JsonObject c : JsonArray d[ "choices" ] ) {
-                    foreach ( Pair<string, JsonValue> p : JsonObject c ) {
-                        dialogue.choices.insert( p.first, p.second.asString() );
+                    var choice = new Choice() {
+                        choice.next = c[ "next" ].asString();
+                        choice.text = c[ "text" ].asString();
                     }
+
+                    dialogue.choices.insert( dialogue.choices.size(), choice );
                 }
             }
             if ( d.isMember( "require_flag" ) ) dialogue.requireFlag = d[ "require_flag" ].asString();
@@ -65,11 +76,11 @@ public object Dialogue
     }
 
     public void Constructor() {
-        choices = new Map<string, string>();
+        choices = new Map<int, Choice>();
     }
 
     public string =operator( string ) const {
-        return text + ", " + requireFlag + ", " + setFlag + ", " + setItem;
+        return text + " | " + requireFlag + " | " + setFlag + " | " + setItem;
     }
 }
 

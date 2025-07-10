@@ -56,7 +56,7 @@ public object World
             }
         }
 
-        throw "Item with id " + id + " not found!";
+        throw "Item with id '" + id + "' not found!";
     }
 
     NPC getNPC( string id ) const throws {
@@ -66,7 +66,7 @@ public object World
             }
         }
 
-        throw "NPC with id " + id + " not found!";
+        throw "NPC with id '" + id + "' not found!";
     }
 
     Room getRoom( string id ) const throws {
@@ -76,7 +76,7 @@ public object World
             }
         }
 
-        throw "Room with id " + id + " not found!";
+        throw "Room with id '" + id + "' not found!";
     }
 
     public void load() modify {
