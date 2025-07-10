@@ -116,51 +116,8 @@ public object World
 
         events.clear();
 
-        /*
-        "id": "enter_room",
-        "room": "throne_room",
-        "repeat": true,
-        "effect": {
-            "text": "The king greets you warmly.",
-            "set_flag": ["talked_to_king"],
-            "unset_flag": ["not_talked_to_king"]
-        },
-        "require": {
-            "flag": ["door_unlocked"],
-            "item": []
-        }
-        */
-        foreach ( JsonObject e : data ) {
-            var event = new Event() {
-                event.id     = e[ "id" ].asString();
-                event.repeat = e[ "repeat" ].asBool();
-
-                if ( e.isMember( "effect" ) ) {
-                    var effect const = JsonObject e[ "effect" ];
-                    event.effectText = effect[ "text" ].asString();
-
-                    foreach ( JsonValue f : JsonArray effect[ "flag" ] ) {
-                        event.effectFlag.push_back( f.asString() );
-                    }
-                    foreach ( JsonValue i : JsonArray effect[ "unflag" ] ) {
-                        event.effectUnflag.push_back( i.asString() );
-                    }
-                }
-                if ( e.isMember( "item" ) ) event.item = e[ "item" ].asString();
-                if ( e.isMember( "require" ) ) {
-                    var require const = JsonObject e[ "require" ];
-
-                    foreach ( JsonValue f : JsonArray require[ "flag" ] ) {
-                        event.requireFlag.push_back( f.asString() );
-                    }
-                    foreach ( JsonValue i : JsonArray require[ "item" ] ) {
-                        event.requireItem.push_back( i.asString() );
-                    }
-                }
-                if ( e.isMember( "room" ) )      event.room = e[ "room" ].asString();
-                if ( e.isMember( "triggered" ) ) event.item = e[ "triggered" ].asBool();
-            }
-            events.push_back( event );
+        foreach ( JsonValue e : data ) {
+            events.push_back( Event.parse( e ) );
         }
     }
 
@@ -169,23 +126,8 @@ public object World
 
         items.clear();
 
-        foreach ( JsonObject i : data ) {
-            var item = new Item() {
-                item.description  = i[ "description" ].asString();
-                item.id           = i[ "id" ].asString();
-                item.name         = i[ "name" ].asString();
-                item.usable       = i[ "usable" ].asBool();
-
-                if ( i.isMember( "contains" ) ) {
-                    foreach ( JsonValue s : JsonArray i[ "contains" ] ) {
-                        item.contains.push_back( s.asString() );
-                    }
-                }
-                if ( i.isMember( "locked" ) )        item.locked       = i[ "locked" ].asBool();
-                if ( i.isMember( "requires_item" ) ) item.requiresItem = i[ "requires_item" ].asString();
-                if ( i.isMember( "use_effect" ) )    item.useEffect    = i[ "use_effect" ].asBool();
-            }
-            items.push_back( item );
+        foreach ( JsonValue i : data ) {
+            items.push_back( Item.parse( i ) );
         }
     }
 
@@ -200,63 +142,18 @@ public object World
     }
 
     private void loadPlayer() modify {
-        var data = JsonObject loadJson( "data/player.json" );
+        var data = loadJson( "data/player.json" );
 
-        {   //player.flags
-            player.flags.clear();
-            foreach ( JsonValue flag : JsonArray data[ "flags" ] ) {
-                player.flags.push_back( flag.asString() );
-            }
-        }
-        {   //player.inventory
-            player.inventory.clear();
-            foreach ( JsonValue item : JsonArray data[ "inventory" ] ) {
-                player.inventory.push_back( item.asString() );
-            }
-        }
-        player.location = data[ "location" ].asString();
+        player = Player.parse( data );
     }
 
     private void loadRooms() modify {
-        var data = loadJson( "data/rooms.json" );
+        var data = JsonArray loadJson( "data/rooms.json" );
 
         rooms.clear();
 
-        foreach ( JsonObject r : JsonObject data ) {
-            var room = new Room() {
-                room.description = r[ "description" ].asString();
-                room.id          = r[ "id" ].asString();
-                room.name        = r[ "name" ].asString();
-
-                if ( r.isMember( "exits" ) ) {
-                    var exits const = JsonObject r[ "exits" ];
-
-                    if ( exits.isMember( "east" ) )  room.exits.insert( "east",  exits[ "east" ].asString() );
-                    if ( exits.isMember( "north" ) ) room.exits.insert( "north", exits[ "north" ].asString() );
-                    if ( exits.isMember( "south" ) ) room.exits.insert( "south", exits[ "south" ].asString() );
-                    if ( exits.isMember( "west" ) )  room.exits.insert( "west",  exits[ "west" ].asString() );
-
-                    // foreach ( Pair<string, string> p : room.exits ) {
-                    //     print( room.name + ": " + cast<string>( p ) );
-                    // }
-                }
-                if ( r.isMember( "items" ) ) {   // items
-                    foreach ( JsonValue item : JsonArray r[ "items" ] ) {
-                        room.items.push_back( item.asString() );
-
-                        // print( room.name + ": " + item.asString() + " [item]" );
-                    }
-                }
-                if ( r.isMember( "npcs" ) ) {   // npcs
-                    foreach ( JsonValue npc : JsonArray r[ "npcs" ] ) {
-                        room.npcs.push_back( npc.asString() );
-
-                        // print( room.name + ": " + npc.asString() + " [npc]" );
-                    }
-                }
-            }
-
-            rooms.push_back( room );
+        foreach ( JsonValue r : data ) {
+            rooms.push_back( Room.parse( r ) );
         }
     }
 

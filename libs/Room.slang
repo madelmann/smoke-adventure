@@ -27,6 +27,34 @@ public object Room
     public string name;
     public Vector<string> npcs;
 
+    public static Room parse( JsonValue data ) {
+        var room = new Room() {
+            var r = JsonObject data;
+
+            room.description = r[ "description" ].asString();
+            room.id          = r[ "id" ].asString();
+            room.name        = r[ "name" ].asString();
+
+            if ( r.isMember( "exits" ) ) {
+                foreach ( Pair<string, JsonValue> p : JsonObject r[ "exits" ] ) {
+                    room.exits.insert( p.first, p.second.asString() );
+                }
+            }
+            if ( r.isMember( "items" ) ) {
+                foreach ( JsonValue item : JsonArray r[ "items" ] ) {
+                    room.items.push_back( item.asString() );
+                }
+            }
+            if ( r.isMember( "npcs" ) ) {
+                foreach ( JsonValue npc : JsonArray r[ "npcs" ] ) {
+                    room.npcs.push_back( npc.asString() );
+                }
+            }
+        }
+
+        return room;
+    }
+
     public void Constructor() {
         exits = new Map<string, string>();
         items = new Vector<string>();
@@ -35,5 +63,9 @@ public object Room
 
     public bool operator==( string id_ ) const {
         return id == id_;
+    }
+
+    public string =operator( string ) const {
+        return id + " | " + name + " | " + description;
     }
 }

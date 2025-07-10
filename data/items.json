@@ -18,6 +18,12 @@
     "usable": false
   },
   {
+    "id": "detective_hat",
+    "name": "detective's hat",
+    "description": "An old worne out hat. It's mine. I have him since my first case as P.I.",
+    "usable": false
+  },
+  {
     "id": "music_box",
     "name": "music box",
     "description": "A delicate silver box with a broken ballerina on top. When wound, it plays a familiar melody.",

@@ -47,6 +47,15 @@ public object Dialogue
 
             dialogue.text = d[ "text" ].asString();
 
+            if ( d.isMember( "choices" ) ) {
+                dialogue.choices = new Map<string, string>();
+
+                foreach ( JsonObject c : JsonArray d[ "choices" ] ) {
+                    foreach ( Pair<string, JsonValue> p : JsonObject c ) {
+                        dialogue.choices.insert( p.first, p.second.asString() );
+                    }
+                }
+            }
             if ( d.isMember( "require_flag" ) ) dialogue.requireFlag = d[ "require_flag" ].asString();
             if ( d.isMember( "set_flag" ) )     dialogue.setFlag     = d[ "set_flag" ].asString();
             if ( d.isMember( "set_item" ) )     dialogue.setItem     = d[ "set_item" ].asString();
@@ -60,7 +69,7 @@ public object Dialogue
     }
 
     public string =operator( string ) const {
-        return "{ {{text}}, {{requireFlag}}, {{setFlag}}, {{setItem}} }";
+        return text + ", " + requireFlag + ", " + setFlag + ", " + setItem;
     }
 }
 
@@ -98,6 +107,6 @@ public object NPC
     }
 
     public string =operator( string ) const {
-        return "{ {{id}}, {{name}}, {{description}} }";
+        return id + " | " + name + " | " + description;
     }
 }

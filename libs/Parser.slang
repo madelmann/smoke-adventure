@@ -105,6 +105,9 @@ public object Parser
                 else if ( command == "debug" ) {
                     printDebug();
                 }
+                else if ( command == "events" ) {
+                    events();
+                }
                 else if ( command == "items" ) {
                     items();
                 }
@@ -124,6 +127,14 @@ public object Parser
 
                 print( "" );
             }
+        }
+    }
+
+    private void events() {
+        print( "id | room | item | triggered" );
+
+        foreach ( Event e : world.events ) {
+            print( e.id + " | " + e.room + " | " + e.item + " | " + e.triggered );
         }
     }
 
@@ -209,12 +220,16 @@ public object Parser
     }
 
     private void items() {
+        print( "id | name | description" );
+
         foreach ( Item i : world.items ) {
             print( i.id + " | " + i.name + " | " + i.description );
         }
     }
 
     private void rooms() {
+        print( "id | name | description" );
+
         foreach ( Room r : world.rooms ) {
             print( r.id + " | " + r.name + " | " + r.description );
         }
@@ -280,6 +295,8 @@ public object Parser
     }
 
     private void npcs() {
+        print( "id | name | description" );
+
         foreach ( NPC n : world.npcs ) {
             print( n.id + " | " + n.name + " | " + n.description );
         }
@@ -309,6 +326,7 @@ public object Parser
         print( "use" );
         print( "- debug - " );
         print( "debug" );
+        print( "events" );
         print( "items" );
         print( "npcs" );
         print( "rooms" );
