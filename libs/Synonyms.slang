@@ -47,9 +47,6 @@ public object Synonyms
     private void loadSynonyms() modify {
         var data = JsonObject loadJson( "data/synonyms.json" );
 
-        var writer = new JsonStyledWriter();
-        // print( writer.toString( data ) );
-
         synEmpty = new Vector<string>();
         foreach ( JsonValue verb : JsonArray data[ "" ] ) {
             synEmpty.push_back( verb.asString() );

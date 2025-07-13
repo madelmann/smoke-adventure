@@ -27,12 +27,28 @@ public object Parser
 
             synonyms.prepare( input );
 
-            // process input
             var tokenIt = input.SplitBy( " " );
             if ( tokenIt.hasNext() ) {
                 var command = tokenIt++;
 
-                if ( command == "give" ) {
+                // menu - begin
+                if ( command == "help" ) {
+                    printHelp();
+                }
+                else if ( command == "load" ) {
+                    world.load();
+
+                    goto( player.location );
+                }
+                else if ( command == "quit" ) {
+                    break;
+                }
+                else if ( command == "save" ) {
+                    world.save();
+                }
+                // menu - end
+                // game - begin
+                else if ( command == "give" ) {
                     var item = tokenIt++;
 
                     string to;
@@ -47,16 +63,8 @@ public object Parser
                         go( tokenIt++ );
                     }
                 }
-                else if ( command == "help" ) {
-                    printHelp();
-                }
                 else if ( command == "inventory" ) {
                     inventory();
-                }
-                else if ( command == "load" ) {
-                    world.load();
-
-                    goto( player.location );
                 }
                 else if ( command == "look" ) {
                     string item;
@@ -65,12 +73,6 @@ public object Parser
                     }
 
                     look( item );
-                }
-                else if ( command == "quit" ) {
-                    break;
-                }
-                else if ( command == "save" ) {
-                    world.save();
                 }
                 else if ( command == "take" ) {
                     string item;
@@ -101,6 +103,7 @@ public object Parser
 
                     use( item, with );
                 }
+                // game - end
                 // debug only - begin
                 else if ( command == "debug" ) {
                     printDebug();
@@ -315,6 +318,7 @@ public object Parser
 
     private void printHelp() {
         print( "Supported commands:" );
+        print( "- menu -" );
         print( "load" );
         print( "save" );
         print( "quit" );

@@ -14,18 +14,10 @@ private JsonValue loadJson( string filename ) const {
 
     string content;
     if ( System.IO.File.Exists( "save/" + filename ) ) {
-        content = loadFile( "save/" + filename );
-    }
-    else {
-        content = loadFile( filename );
+        filename = "save/" + filename;
     }
 
-    var data = reader.parse( content );
-
-    //var writer = new JsonStyledWriter();
-    //print( writer.toString( data ) );
-
-    return data;
+    return reader.parse( loadFile( filename ) );
 }
 
 private void storeFile( string filename, string content ) const {
