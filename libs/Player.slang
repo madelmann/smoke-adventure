@@ -6,9 +6,9 @@ import System.Collections.Vector;
 
 
 /*
-"location": "detective_office",
-"inventory": ["detective hat", "music_box", "locker_key"],
 "flags": ["found_cufflink"]
+"inventory": ["detective_hat", "music_box", "locker_key"],
+"location": "detective_office",
 */
 
 public object Player
@@ -22,10 +22,14 @@ public object Player
             var p = JsonObject data;
 
             foreach ( JsonValue flag : JsonArray p[ "flags" ] ) {
-                player.flags.push_back( flag.asString() );
+                if ( !player.flags.contains( flag.asString() ) ) {
+                    player.flags.push_back( flag.asString() );
+                }
             }
             foreach ( JsonValue item : JsonArray p[ "inventory" ] ) {
-                player.inventory.push_back( item.asString() );
+                if ( !player.inventory.contains( item.asString() ) ) {
+                    player.inventory.push_back( item.asString() );
+                }
             }
             player.location = p[ "location" ].asString();
         }

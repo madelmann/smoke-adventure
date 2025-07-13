@@ -160,7 +160,9 @@ public object Parser
         event.triggered = true;
 
         foreach ( string flag : event.effectFlag ) {
-            player.flags.push_back( flag );
+            if ( !player.flags.contains( flag ) ) {
+                player.flags.push_back( flag );
+            }
         }
         foreach ( string flag : event.effectUnflag ) {
             player.flags.erase( player.flags.indexOf( flag ) );
@@ -339,7 +341,12 @@ public object Parser
                 print( "You are picking up " + i );
 
                 currentRoom.items.erase( currentRoom.items.indexOf( item ) );
-                player.inventory.push_back( i );
+
+                // silently ignore already owned items
+                if ( !player.inventory.contains( i ) ) {
+                    player.inventory.push_back( i );
+                }
+
                 return;
             }
         }
@@ -350,32 +357,22 @@ public object Parser
     private void talk( string npc ) modify {
         foreach ( string n : currentRoom.npcs ) {
             if ( n == npc ) {
-                talkWith( npc );
-                return;
+                try {
+                    return dialogue( world.getNPC( npc ), "intro" );
+                }
             }
         }
 
         print( "You can't do that." );
     }
 
-    private void talkWith( string id ) modify throws {
-        var npc = world.getNPC( id );
-        if ( npc ) {
-            // print( cast<string>( npc ) );
-
-            return dialogue( npc, "intro" );
-        }
-
-        throw "NPC '" + id + "' not found!";
-    }
-
     private void dialogue( NPC npc, string entry ) modify {
         foreach ( Pair<string, Dialogue> p : npc.dialogue ) {
             if ( p.first == entry ) {
-                if ( p.second.setFlag ) {
+                if ( p.second.setFlag && !player.flags.contains( p.second.setFlag ) ) {
                     player.flags.push_back( p.second.setFlag );
                 }
-                if ( p.second.setItem ) {
+                if ( p.second.setItem && !player.inventory.contains( p.second.setItem ) ) {
                     player.inventory.push_back( p.second.setItem );
                 }
 

@@ -29,8 +29,10 @@ private JsonValue loadJson( string filename ) const {
 }
 
 private void storeFile( string filename, string content ) const {
-    var file = new System.IO.File( filename, System.IO.File.AccessMode.WriteOnly );
-    file.write( content );
+    var file = new System.IO.File( filename, System.IO.File.AccessMode.WriteOnly ) {
+        file.write( content );
+        file.close();
+    }
 }
 
 
