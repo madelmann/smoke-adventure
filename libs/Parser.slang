@@ -133,6 +133,44 @@ public object Parser
         }
     }
 
+    private void dialogue( NPC npc, string entry ) modify {
+        foreach ( Pair<string, Dialogue> p : npc.dialogue ) {
+            if ( p.first == entry ) {
+                if ( p.second.setFlag && !player.flags.contains( p.second.setFlag ) ) {
+                    player.flags.push_back( p.second.setFlag );
+                }
+                if ( p.second.setItem && !player.inventory.contains( p.second.setItem ) ) {
+                    player.inventory.push_back( p.second.setItem );
+                }
+
+                print( p.second.text );
+
+                if ( p.second.choices.size() ) {
+                    var choices = new Map<int, int>(); // visibleIndex, choiceIndex
+                    foreach ( Pair<int, Choice> c : p.second.choices ) {
+                        if ( ( !c.second.requireFlag || player.flags.contains( c.second.requireFlag ) )
+                          && ( !c.second.requireItem || player.inventory.contains( c.second.requireItem ) ) ) {
+                            print( "" + ( choices.size() + 1 ) + ": " + c.second.text );
+
+                            choices.insert( choices.size() + 1, c.first );
+                        }
+                    }
+
+                    write( "Say: " );
+                    var choiceIdx = choices[ cast<int>( cin() ) ];
+
+                    foreach ( Pair<int, Choice> c : p.second.choices ) {
+                        if ( c.first == choiceIdx ) {
+                            return dialogue( npc, c.second.next );
+                        }
+                    }
+                }
+
+                return;
+            }
+        }
+    }
+
     private void events() {
         print( "id | room | item | triggered" );
 
@@ -368,38 +406,6 @@ public object Parser
         }
 
         print( "You can't do that." );
-    }
-
-    private void dialogue( NPC npc, string entry ) modify {
-        foreach ( Pair<string, Dialogue> p : npc.dialogue ) {
-            if ( p.first == entry ) {
-                if ( p.second.setFlag && !player.flags.contains( p.second.setFlag ) ) {
-                    player.flags.push_back( p.second.setFlag );
-                }
-                if ( p.second.setItem && !player.inventory.contains( p.second.setItem ) ) {
-                    player.inventory.push_back( p.second.setItem );
-                }
-
-                print( p.second.text );
-
-                if ( p.second.choices.size() ) {
-                    foreach ( Pair<int, Choice> c : p.second.choices ) {
-                        print( "" + ( c.first + 1 ) + ": " + c.second.text );
-                    }
-
-                    write( "Say: " );
-                    var choiceIdx = cast<int>( cin() ) - 1;
-
-                    foreach ( Pair<int, Choice> c : p.second.choices ) {
-                        if ( c.first == choiceIdx ) {
-                            return dialogue( npc, c.second.next );
-                        }
-                    }
-                }
-
-                return;
-            }
-        }
     }
 
     private void use( string item, string with ) modify {

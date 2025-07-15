@@ -1,8 +1,8 @@
 
 // library imports
 import FileReader;
-//import libSQLite3;
-//import libSQLite3.Exceptions;
+// import libSQLite3;
+// import libSQLite3.Exceptions;
 import System.Collections.Vector;
 
 // project imports
@@ -80,23 +80,14 @@ public object World
     }
 
     public void load() modify {
+        // database = new Sqlite3Database( "data.db" );
+
         loadEvents();
         loadIntro();
         loadItems();
         loadNPCs();
         loadPlayer();
         loadRooms();
-
-        /*
-        var db = new Sqlite3Database( "data.db" );
-        var result = db.exec( "SELECT name, type FROM sqlite_master" );
-
-        try {
-            print( "ErrorCode: " + db.errCode() );
-            print( "ErrroMessage: " + db.errMsg() );
-            print( "Results(" + result.Rows.size() + ") = " + cast<string>( result ) );
-        }
-        */
     }
 
     public void save() const {
@@ -122,6 +113,20 @@ public object World
     }
 
     private void loadItems() modify {
+        // try {
+        //     var result = database.exec( "SELECT contains, description, id, locked, name, requires_item, usable, use_effect FROM item" );
+
+        //     print( "ErrorCode: " + database.errCode() );
+        //     print( "ErrorMessage: " + database.errMsg() );
+        //     print( "Results(" + result.Rows.size() + ") = " + cast<string>( result ) );
+        // }
+        // catch ( string e ) {
+        //     print( "Exception: " + e );
+        // }
+        // catch ( IException e ) {
+        //     print( "Exception: " + e.what() );
+        // }
+
         var data = JsonArray loadJson( "data/items.json" );
 
         items.clear();
@@ -370,4 +375,6 @@ public object World
         var writer = new JsonStyledWriter();
         storeFile( "save/data/rooms.json", writer.toString( data ) );
     }
+
+    // private Sqlite3Database database;
 }

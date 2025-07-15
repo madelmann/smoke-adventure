@@ -36,7 +36,22 @@ import System.Collections.Map;
 public object Choice
 {
     public string next;
+    public string requireFlag;
+    public string requireItem;
     public string text;
+
+    public static Choice parse( JsonValue data ) {
+        var choice = new Choice() {
+            var c = JsonObject data;
+
+            choice.next = c[ "next" ].asString();
+            choice.text = c[ "text" ].asString();
+            if ( c.isMember( "require_flag" ) ) choice.requireFlag = c[ "require_flag" ].asString();
+            if ( c.isMember( "require_item" ) ) choice.requireItem = c[ "require_item" ].asString();
+        }
+
+        return choice;
+    }
 
     public string =operator( string ) const {
         return text + " | " + next;
@@ -46,7 +61,6 @@ public object Choice
 public object Dialogue
 {
     public Map<int, Choice> choices;     // text, nextDialogue
-    public string requireFlag;
     public string setFlag;
     public string setItem;
     public string text;
@@ -58,18 +72,12 @@ public object Dialogue
             dialogue.text = d[ "text" ].asString();
 
             if ( d.isMember( "choices" ) ) {
-                foreach ( JsonObject c : JsonArray d[ "choices" ] ) {
-                    var choice = new Choice() {
-                        choice.next = c[ "next" ].asString();
-                        choice.text = c[ "text" ].asString();
-                    }
-
-                    dialogue.choices.insert( dialogue.choices.size(), choice );
+                foreach ( JsonValue c : JsonArray d[ "choices" ] ) {
+                    dialogue.choices.insert( dialogue.choices.size(), Choice.parse( c ) );
                 }
             }
-            if ( d.isMember( "require_flag" ) ) dialogue.requireFlag = d[ "require_flag" ].asString();
-            if ( d.isMember( "set_flag" ) )     dialogue.setFlag     = d[ "set_flag" ].asString();
-            if ( d.isMember( "set_item" ) )     dialogue.setItem     = d[ "set_item" ].asString();
+            if ( d.isMember( "set_flag" ) ) dialogue.setFlag = d[ "set_flag" ].asString();
+            if ( d.isMember( "set_item" ) ) dialogue.setItem = d[ "set_item" ].asString();
         }
 
         return dialogue;
@@ -80,7 +88,7 @@ public object Dialogue
     }
 
     public string =operator( string ) const {
-        return text + " | " + requireFlag + " | " + setFlag + " | " + setItem;
+        return text + " | " + setFlag + " | " + setItem;
     }
 }
 

@@ -8,19 +8,36 @@
       "intro": {
         "text": "You again. I told you I don't know anything about Lorne.",
         "choices": [
-          { "text": "I found this cufflink at your club.", "next": "cufflink" },
-          { "text": "Come on, Viv. Talk to me.", "next": "soften" }
+          {
+            "text": "I found this cufflink at your club.",
+            "next": "cufflink",
+            "require_item": "cufflink",
+            "require_flag": "found_cufflink",
+            "disabled_text": "You’d need to show her something — maybe a clue."
+          },
+          {
+            "text": "Come on, Viv. Talk to me.",
+            "next": "soften"
+          }
         ]
       },
       "soften": {
         "text": "Don't make me regret this. He was in trouble. Real trouble.",
-        "choices": [{ "text": "What kind of trouble?", "next": "trouble" }]
+        "choices": [
+          {
+            "text": "What kind of trouble?",
+            "next": "trouble"
+          }
+        ]
       },
       "cufflink": {
-        "requires_item": "cufflink",
-        "requires_flag": "found_cufflink",
         "text": "...Lorne always wore those. I told him not to come back here.",
-        "choices": [{ "text": "Why?", "next": "warning" }]
+        "choices": [
+          {
+            "text": "Why?",
+            "next": "warning"
+          }
+        ]
       },
       "warning": {
         "text": "Because Leone was watching. And Lorne wasn’t careful.",
@@ -35,52 +52,72 @@
   {
     "id": "mick",
     "name": "Mick",
-    "description": "A gruff, loyal locker attendant with a gruff personality.",
+    "description": "Gruff locker attendant at the station, a former dock worker with a long memory and a short temper.",
     "personality": "Gruff, loyal, slow to trust.",
     "dialogue": {
       "intro": {
         "text": "You ain't supposed to be back here.",
         "choices": [
-          { "text": "Vivienne sent me.", "next": "trust" },
-          { "text": "I need access to locker 314.", "next": "locker" }
+          {
+            "text": "Vivienne sent me.",
+            "next": "trust",
+            "require_flag": "sent_to_mick",
+            "disabled_text": "You don’t have anyone vouching for you."
+          },
+          {
+            "text": "I need access to locker 314.",
+            "next": "locker",
+            "require_flag": "mick_trusts_you",
+            "disabled_text": "He doesn’t trust you enough for that."
+          }
         ]
       },
       "trust": {
-        "requires_flag": "sent_to_mick",
         "text": "...Alright. If Viv vouched, maybe you're okay.",
         "set_flag": "mick_trusts_you"
       },
       "locker": {
-        "requires_flag": "mick_trusts_you",
         "text": "Here, take the key. I never saw you.",
         "set_flag": "has_locker_key",
-        "give_item": "locker_key"
+        "retrieve_item": "locker_key"
       }
     }
   },
   {
     "id": "leone",
     "name": "Leone Carro",
-    "description": "A calm, dangerous smuggler with a cold smile.",
-    "personality": "Calm, dangerous, cold.",
+    "description": "A calm, calculating smuggler who runs the docks like a chessboard. Knows everything — and shows nothing.",
+    "personality": "Calm. Dangerous. Smiles without warmth.",
     "dialogue": {
       "intro": {
         "text": "You walked into the wrong end of town, detective.",
         "choices": [
-          { "text": "I'm looking for a man named Lorne.", "next": "lorne" },
-          { "text": "You’ve got shipments that don’t add up.", "next": "bluff" }
+          {
+            "text": "I'm looking for a man named Lorne.",
+            "next": "lorne"
+          },
+          {
+            "text": "You’ve got shipments that don’t add up.",
+            "next": "bluff",
+            "require_flag": "has_ledger",
+            "disabled_text": "You need evidence to confront him."
+          }
         ]
       },
       "lorne": {
         "text": "Lorne played a game. He lost.",
-        "choices": [{ "text": "Where is he now?", "next": "gone" }]
+        "choices": [
+          {
+            "text": "Where is he now?",
+            "next": "gone"
+          }
+        ]
       },
       "gone": {
         "text": "Gone. Like smoke in the rain.",
         "set_flag": "confirmed_lorne_dead"
       },
       "bluff": {
-        "requires_flag": "has_ledger",
         "text": "...You’ve been poking around too much. That ledger’s going to cost you.",
         "set_flag": "trigger_final_scene"
       }
