@@ -61,6 +61,24 @@ public object Room
         npcs  = new Vector<string>();
     }
 
+    public void Print() const {
+        print( "ID: " + id );
+        print( "Name: " + name );
+        print( "Description: " + description );
+        print( "Exits:" );
+        foreach ( Pair<string, string> e : exits ) {
+            print( "   " + cast<string>( e ) );
+        }
+        print( "Items:" );
+        foreach ( string item : items ) {
+            print( "   " + item );
+        }
+        print( "NPCs:" );
+        foreach ( string npc : npcs ) {
+            print( "   " + npc );
+        }
+    }
+
     public bool operator==( string id_ ) const {
         return id == id_;
     }

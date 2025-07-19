@@ -52,6 +52,20 @@ public object Item
         contains = new Vector<string>();
     }
 
+    public void Print() const {
+        print( "ID: " + id );
+        print( "Name: " + name );
+        print( "Description: " + description );
+        print( "Locked: " + locked );
+        print( "Usable: " + usable );
+        print( "RequiresItem: " + requiresItem );
+        print( "Usable: " + usable );
+        print( "Contains:" );
+        foreach ( string content : contains ) {
+            print( "   " + content );
+        }
+    }
+
     public bool operator==( string id_ ) const {
         return id == id_;
     }

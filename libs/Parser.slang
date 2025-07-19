@@ -112,16 +112,33 @@ public object Parser
                     events();
                 }
                 else if ( command == "items" ) {
-                    items();
+                    string value;
+                    if ( tokenIt.hasNext() ) {
+                        value = tokenIt++;
+                    }
+
+                    items( value );
                 }
                 else if ( command == "npcs" ) {
-                    npcs();
+                    string value;
+                    if ( tokenIt.hasNext() ) {
+                        value = tokenIt++;
+                    }
+
+                    npcs( value );
                 }
                 else if ( command == "rooms" ) {
-                    rooms();
+                    string value;
+                    if ( tokenIt.hasNext() ) {
+                        value = tokenIt++;
+                    }
+
+                    rooms( value );
                 }
                 else if ( command == "teleport" ) {
-                    goto( tokenIt++ );
+                    if ( tokenIt.hasNext() ) {
+                        goto( tokenIt++ );
+                    }
                 }
                 // debug only - end
                 else {
@@ -262,19 +279,20 @@ public object Parser
         }
     }
 
-    private void items() {
+    private void items( string item ) {
+        if ( item ) {
+            try {
+                var tmp = world.getItem( item );
+                tmp.Print();
+            }
+
+            return;
+        }
+
         print( "id | name | description" );
 
         foreach ( Item i : world.items ) {
             print( i.id + " | " + i.name + " | " + i.description );
-        }
-    }
-
-    private void rooms() {
-        print( "id | name | description" );
-
-        foreach ( Room r : world.rooms ) {
-            print( r.id + " | " + r.name + " | " + r.description );
         }
     }
 
@@ -337,7 +355,16 @@ public object Parser
         print( npc.description );
     }
 
-    private void npcs() {
+    private void npcs( string npc ) {
+        if ( npc ) {
+            try {
+                var tmp = world.getNPC( npc );
+                tmp.Print();
+            }
+
+            return;
+        }
+
         print( "id | name | description" );
 
         foreach ( NPC n : world.npcs ) {
@@ -375,6 +402,23 @@ public object Parser
         print( "npcs" );
         print( "rooms" );
         print( "teleport" );
+    }
+
+    private void rooms( string room ) {
+        if ( room ) {
+            try {
+                var tmp = world.getRoom( room );
+                tmp.Print();
+            }
+
+            return;
+        }
+
+        print( "id | name | description" );
+
+        foreach ( Room r : world.rooms ) {
+            print( r.id + " | " + r.name + " | " + r.description );
+        }
     }
 
     private void take( string item ) modify {

@@ -121,6 +121,17 @@ public object NPC
         dialogue = new Map<string, Dialogue>();
     }
 
+    public void Print() const {
+        print( "ID: " + id );
+        print( "Name: " + name );
+        print( "Description: " + description );
+        print( "Personality: " + personality );
+        print( "Dialogues:" );
+        foreach ( Dialogue d : dialogue ) {
+            print( "   " + cast<string>( d ) );
+        }
+    }
+
     public bool operator==( string id_ ) const {
         return id == id_;
     }
