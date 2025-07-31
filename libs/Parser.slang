@@ -19,7 +19,7 @@ public object Parser
     public void run() modify {
         print( world.intro );
 
-        goto( player.location );
+        goto( player.locationId );
 
         while ( true ) {
             cout( "> " );
@@ -38,7 +38,7 @@ public object Parser
                 else if ( command == "load" ) {
                     world.load();
 
-                    goto( player.location );
+                    goto( player.locationId );
                 }
                 else if ( command == "quit" ) {
                     break;
@@ -248,19 +248,29 @@ public object Parser
     }
 
     private void go( string direction ) modify {
-        foreach ( Pair<string, string> p : currentRoom.exits ) {
+        foreach ( Pair<string, Exit> p : currentRoom.exits ) {
             if ( p.first == direction ) {
-                return goto( p.second );
+                if ( p.second.requireFlag && !player.flags.contains( p.second.requireFlag ) ) {
+                    break;
+                }
+                if ( p.second.requireItem && !player.inventory.contains( p.second.requireItem ) ) {
+                    break;
+                }
+
+                return goto( p.second.roomId );
             }
         }
 
         print( "You cannot go there" );
     }
 
-    private void goto( string location ) modify {
+    private void goto( string locationId ) modify {
         foreach ( Room r : world.rooms ) {
-            if ( r == location ) {
-                player.location = location;
+            if ( r == locationId ) {
+                // TODO: check if we are allowed to enter the room?
+                // if ( r. )
+
+                player.locationId = locationId;
 
                 currentRoom = r;
 
@@ -274,8 +284,8 @@ public object Parser
     }
 
     private void inventory() {
-        foreach ( string i : player.inventory ) {
-            print( "You have a " + i );
+        foreach ( string item : player.inventory ) {
+            print( "You have a " + item );
         }
     }
 
@@ -291,8 +301,8 @@ public object Parser
 
         print( "id | name | description" );
 
-        foreach ( Item i : world.items ) {
-            print( i.id + " | " + i.name + " | " + i.description );
+        foreach ( Item item : world.items ) {
+            print( item.id + " | " + item.name + " | " + item.description );
         }
     }
 
@@ -302,16 +312,16 @@ public object Parser
             print( currentRoom.description );
             print( "" );
 
-            foreach ( string n : currentRoom.npcs ) {
-                print( "You see " + n );
+            foreach ( string npc : currentRoom.npcs ) {
+                print( "You see " + npc );
             }
 
-            foreach ( string i : currentRoom.items ) {
-                print( "You see a " + i );
+            foreach ( string item : currentRoom.items ) {
+                print( "You see a " + item );
             }
 
-            foreach ( Pair<string, string> p : currentRoom.exits ) {
-                print( "From here you can go " + p.first );
+            foreach ( Pair<string, string> e : currentRoom.exits ) {
+                print( "From here you can go " + e.first );
             }
 
             return;
@@ -321,22 +331,19 @@ public object Parser
 
         foreach ( string i : player.inventory ) {
             if ( i == item ) {
-                lookAtItem( item );
-                return;
+                return lookAtItem( item );
             }
         }
 
         foreach ( string i : currentRoom.items ) {
             if ( i == item ) {
-                lookAtItem( item );
-                return;
+                return lookAtItem( item );
             }
         }
 
         foreach ( string n : currentRoom.npcs ) {
             if ( n == item ) {
-                lookAtNPC( item );
-                return;
+                return lookAtNPC( item );
             }
         }
 

@@ -3,10 +3,10 @@
     "id": "detective_office",
     "name": "The Detective's Office",
     "description": "The blinds cast crooked shadows across a desk littered with old case files and empty glasses. Rain drums steadily against the windowpane.",
-    "items": ["whisky_bottle", "case_file"],
+    "items": ["office_desk","whisky_bottle", "case_file"],
     "npcs": [],
     "exits": {
-      "north": "hallway"
+      "north": { "id": "hallway", "require_item": "office_key" }
     }
   },
   {
@@ -16,8 +16,8 @@
     "items": ["cufflink", "music_box","bourbon"],
     "npcs": ["vivienne"],
     "exits": {
-      "south": "docks",
-      "west": "alley"
+      "south": { "id": "docks" },
+      "west": { "id": "alley" }
     }
   },
   {
@@ -27,9 +27,9 @@
     "items": ["crowbar"],
     "npcs": [],
     "exits": {
-      "east": "blue_note",
-      "north": "warehouse_entrance",
-      "south": "docks"
+      "east": { "id": "blue_note" },
+      "north": { "id": "warehouse_entrance" },
+      "south": { "id": "docks" }
     }
   },
   {
@@ -39,8 +39,8 @@
     "items": ["locker"],
     "npcs": ["mick"],
     "exits": {
-      "north": "blue_note",
-      "west": "docks"
+      "north": { "id": "blue_note" },
+      "west": { "id": "docks" }
     }
   },
   {
@@ -50,8 +50,8 @@
     "items": [],
     "npcs": ["guard"],
     "exits": {
-      "north": "warehouse",
-      "south": "alley"
+      "north": { "id": "warehouse" },
+      "south": { "id": "alley" }
     }
   },
   {
@@ -61,7 +61,7 @@
     "items": ["ledger"],
     "npcs": ["leone"],
     "exits": {
-      "south": "warehouse_entrance"
+      "south": { "id": "warehouse_entrance" }
     }
   },
   {
@@ -71,8 +71,8 @@
     "items": ["boat_manifest"],
     "npcs": [],
     "exits": {
-      "east": "station",
-      "north": "alley"
+      "east": { "id": "station" },
+      "north": { "id": "alley" }
     }
   },
   {
@@ -82,8 +82,8 @@
     "items": [],
     "npcs": [],
     "exits": {
-      "north": "street",
-      "south": "detective_office"
+      "north": { "id": "street" },
+      "south": { "id": "detective_office" }
     }
   },
   {
@@ -93,8 +93,8 @@
     "items": [],
     "npcs": [],
     "exits": {
-      "east": "alley",
-      "south": "hallway"
+      "east": { "id": "alley" },
+      "south": { "id": "hallway" }
     }
   }
 ]

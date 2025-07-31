@@ -632,3 +632,73 @@ If the player arrived recklessly (missing key clues), Leone may:
 
     evidence_shared (to public or authorities)
 
+
+
+🕵️ Scene 1: Detective’s Office
+
+Interactive Elements:
+    Object	Action	Result
+    Desk Drawer	Use small_key	Opens to reveal Ray’s journal. Sets flag: read_journal
+    Rug	Examine / Move	Reveals a floorboard.
+    Floorboard	Pry open	Contains small_key. Sets flag: found_key_office
+    Coat Rack	Examine	Jacket pocket contains matchbook. Sets flag: found_matchbook
+    Window	Examine	Rainy skyline. Foreshadowing.
+    Telephone	Use (later)	Once Vivienne’s number is found, can call from here.
+
+🌆 Scene 2: Rain-Slicked Street
+
+Interactive Elements:
+    Object	Action	Result
+    Newspaper Bin	Search	Find headline: “Police Raid Docks – No Arrests.” Clue for later.
+    Drunk Hobo	Talk / Give Coin	Can give optional item (coin) to get clue: “You seen the alley?”
+    Lamp Post	Examine	Etching: "L+V '43" scratched into metal. Sets vivienne_connection
+
+🎷 Scene 3: The Blue Violet Club
+
+Interactive Elements:
+    Object	Action	Result
+    Coat Check	Examine	“Someone left a cufflink.” Gives item cufflink. Sets found_cufflink
+    Stage	Examine	“Vivienne watches you from the shadows behind the mic.”
+    Bar Counter	Talk to Bartender	"Lorne ordered ginger and rye. Haven’t seen him since."
+    Bathroom Mirror	Examine	Foggy, scratched. Writing faintly visible: “413. Don’t forget.”
+
+🧱 Scene 4: Back Alley
+
+Interactive Elements:
+    Object	Action	Result
+    Dumpster	Search	Clue found: torn page from Ray’s notebook. Flag: found_note_page
+    Graffiti	Examine	Leone’s gang symbol. Flag: gang_presence_known
+    Mick (NPC)	Talk	Needs bribe (optional item: cigarette or money) for real answers
+
+🧳 Scene 5: Train Station Locker Room
+
+Interactive Elements:
+    Object	Action	Result
+    Locker 413	Use locker_key	Contains shipment manifest. Sets flag: read_manifest
+    Vending Machine	Examine / Use coin	Can use to distract station agent (optional path)
+    Station Agent	Talk	May block access without distraction unless bribed or distracted
+
+🚢 Scene 6: Warehouse on the Docks
+
+Interactive Elements:
+    Object	Action	Result
+    Shipping Crate	Open	Requires crowbar. Contains evidence: fake IDs. Sets found_fake_ids
+    Catwalk	Climb	See Leone talking to a contact. Sets flag: overheard_leone
+    Electrical Box	Use screwdriver	Optional: disables lights for stealth entry.
+
+🪟 Scene 7: Vivienne’s Apartment
+
+Interactive Elements:
+    Object	Action	Result
+    Record Player	Examine / Play	Song contains clue in lyrics: “Harbour Street, where silence sleeps.”
+    Mirror Cabinet	Search	Contains letter from Lorne. Sets read_letter_lorne
+    Vivienne	Talk	Final personal confession unlocks if vivienne_warned_you flag set
+
+🏙️ Scene 8: Final Rooftop
+
+Interactive Elements:
+    Object	Action	Result
+    Rooftop Edge	Examine	“Long way down. Not the way out.”
+    Pigeon Coop	Examine	Optional: contains ring box. Final Lorne clue. Flag: found_ring_box
+    Leone (NPC)	Talk / Fight / Use gun	Branching final decision: confront, arrest, let fall, or get shot
+

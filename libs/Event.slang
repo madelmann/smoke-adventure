@@ -76,6 +76,31 @@ public object Event
         requireItem  = new Vector<string>();
     }
 
+    public void Print() const {
+        print( "ID: " + id );
+        print( "Room: " + room );
+        print( "Item: " + item );
+        print( "EffectText: " + effectText );
+        print( "Repeat: " + repeat );
+        print( "Triggered: " + triggered );
+        print( "EffectFlag:" );
+        foreach ( string f : effectFlag ) {
+            print( "   EffectFlag: " + f );
+        }
+        print( "EffectUnFlag:" );
+        foreach ( string f : effectUnflag ) {
+            print( "   EffectUnFlag: " + f );
+        }
+        print( "RequireFlag:" );
+        foreach ( string f : requireFlag ) {
+            print( "   RequireFlag: " + f );
+        }
+        print( "RequireItem:" );
+        foreach ( string i : requireItem ) {
+            print( "   RequireItem: " + i );
+        }
+    }
+
     public bool operator==( string id_ ) const {
         return id == id_;
     }

@@ -50,40 +50,6 @@
     }
   },
   {
-    "id": "mick",
-    "name": "Mick",
-    "description": "Gruff locker attendant at the station, a former dock worker with a long memory and a short temper.",
-    "personality": "Gruff, loyal, slow to trust.",
-    "dialogue": {
-      "intro": {
-        "text": "You ain't supposed to be back here.",
-        "choices": [
-          {
-            "text": "Vivienne sent me.",
-            "next": "trust",
-            "require_flag": "sent_to_mick",
-            "disabled_text": "You don’t have anyone vouching for you."
-          },
-          {
-            "text": "I need access to locker 314.",
-            "next": "locker",
-            "require_flag": "mick_trusts_you",
-            "disabled_text": "He doesn’t trust you enough for that."
-          }
-        ]
-      },
-      "trust": {
-        "text": "...Alright. If Viv vouched, maybe you're okay.",
-        "set_flag": "mick_trusts_you"
-      },
-      "locker": {
-        "text": "Here, take the key. I never saw you.",
-        "set_flag": "has_locker_key",
-        "retrieve_item": "locker_key"
-      }
-    }
-  },
-  {
     "id": "leone",
     "name": "Leone Carro",
     "description": "A calm, calculating smuggler who runs the docks like a chessboard. Knows everything — and shows nothing.",
@@ -120,6 +86,180 @@
       "bluff": {
         "text": "...You’ve been poking around too much. That ledger’s going to cost you.",
         "set_flag": "trigger_final_scene"
+      }
+    }
+  },
+  {
+    "id": "mick",
+    "name": "Mick Donnelly",
+    "description": "A greasy informant who thrives in shadows. Loyal only to whoever pays him.",
+    "personality": "Grimy and gruff. Acts friendly but sells everything for the right price.",
+    "dialogue": {
+      "intro": {
+        "text": "Detective. Didn’t think you’d come sniffing ‘round here.",
+        "choices": [
+          {
+            "text": "I heard you know about the shipment.",
+            "next": "shipment"
+          },
+          {
+            "text": "You’ve been tailing Leone, haven’t you?",
+            "next": "tailing"
+          }
+        ]
+      },
+      "shipment": {
+        "text": "Word is Lenny was trying to move something big. Didn’t trust Leone anymore.",
+        "set_flag": "shipment_known",
+        "choices": [
+          {
+            "text": "Where was he hiding it?",
+            "next": "locker_hint"
+          },
+          {
+            "text": "Why didn’t he trust Leone?",
+            "next": "distrust"
+          }
+        ]
+      },
+      "locker_hint": {
+        "text": "Told me he left it somewhere public. Safe. Look for a locker at the station.",
+        "set_flag": "locker_clue"
+      },
+      "distrust": {
+        "text": "Leone’s been paranoid. Thinks everyone’s flipping. Even Lenny.",
+        "choices": [
+          {
+            "text": "What set him off?",
+            "next": "paranoia"
+          }
+        ]
+      },
+      "paranoia": {
+        "text": "A photo showed up. Real blurry. Showed Lenny talking to someone in uniform.",
+        "choices": [
+          {
+            "text": "You have it?",
+            "next": "photo"
+          }
+        ]
+      },
+      "photo": {
+        "text": "Maybe I do. But nothing's free. You got something to trade?",
+        "require_item": "cufflink",
+        "choices": [
+          {
+            "text": "How about this cufflink?",
+            "next": "trade"
+          }
+        ]
+      },
+      "trade": {
+        "text": "Heh. Fancy. Fine, take the photo. Don’t lose it.",
+        "retrieve_item": "photo",
+        "set_flag": "has_photo"
+      },
+      "tailing": {
+        "text": "Leone’s been staying low. Warehouse at the docks. Guards come and go all night.",
+        "set_flag": "dock_known"
+      }
+    }
+  },
+  {
+    "id": "leone",
+    "name": "Leone Marzetti",
+    "description": "The city's underground kingpin. Calm, calculating, always watching.",
+    "personality": "Polite menace. Prefers threats dressed as compliments.",
+    "dialogue": {
+      "intro": {
+        "require_flag": "dock_known",
+        "text": "You’re either brave or foolish, Detective. I haven’t decided yet.",
+        "choices": [
+          {
+            "text": "Lenny’s gone. I know why.",
+            "next": "accuse"
+          },
+          {
+            "text": "Let’s talk about the shipment.",
+            "next": "shipment"
+          }
+        ]
+      },
+      "accuse": {
+        "text": "Is that so? You come here waving stories like a badge. Careful who you flash it to.",
+        "choices": [
+          {
+            "text": "I have the dossier.",
+            "next": "dossier"
+          }
+        ]
+      },
+      "dossier": {
+        "require_item": "dossier",
+        "text": "So it’s true. You know. That complicates things.",
+        "choices": [
+          {
+            "text": "Then make it simple. Confess.",
+            "next": "confess"
+          },
+          {
+            "text": "I want a deal.",
+            "next": "deal"
+          }
+        ]
+      },
+      "confess": {
+        "text": "You think this city cares about confessions? Burn that paper or join Lenny.",
+        "set_flag": "leone_threatens"
+      },
+      "deal": {
+        "text": "You walk away. I forget your name. That’s the deal.",
+        "set_flag": "leone_offered_deal"
+      },
+      "shipment": {
+        "text": "That was business. It went wrong. Now I clean up.",
+        "choices": [
+          {
+            "text": "By silencing people?",
+            "next": "threat"
+          }
+        ]
+      },
+      "threat": {
+        "text": "Let’s not pretend this is justice, Detective. We’re both shadows in the same fog.",
+        "set_flag": "leone_moral_equiv"
+      }
+    }
+  },
+  {
+    "id": "station_attendant",
+    "name": "Station Attendant",
+    "description": "An overworked employee with little patience.",
+    "personality": "Dismissive and tired, but not unhelpful if pressed.",
+    "dialogue": {
+      "intro": {
+        "text": "Locker keys are for paying customers. You got a claim ticket?",
+        "choices": [
+          {
+            "text": "I need access to Locker #413. It’s urgent.",
+            "next": "deny"
+          }
+        ]
+      },
+      "deny": {
+        "text": "Urgent ain’t a magic word. No key, no entry.",
+        "choices": [
+          {
+            "text": "I found this in the trash. Match anything?",
+            "require_item": "matchbook",
+            "next": "allow"
+          }
+        ]
+      },
+      "allow": {
+        "text": "Huh. That’s Lenny’s. He always lit up before the 9:05. Here—take the damn key.",
+        "retrieve_item": "locker_key",
+        "set_flag": "locker_access_granted"
       }
     }
   }

@@ -15,7 +15,7 @@ public object Player
 {
     public Vector<string> flags;
     public Vector<string> inventory;
-    public string location;
+    public string locationId;
 
     public static Player parse( JsonValue data ) {
         var player = new Player() {
@@ -31,7 +31,7 @@ public object Player
                     player.inventory.push_back( item.asString() );
                 }
             }
-            player.location = p[ "location" ].asString();
+            player.locationId = p[ "location" ].asString();
         }
 
         return player;

@@ -18,10 +18,38 @@ import System.Collections.Vector;
 // project imports
 
 
+public object Exit
+{
+    public string requireFlag;
+    public string requireItem;
+    public string roomId;
+
+    public static Exit parse( JsonValue data ) {
+        var roomExit = new Exit() {
+            var r = JsonObject data;
+
+            roomExit.roomId = r[ "id" ].asString();
+
+            if ( r.isMember( "require_flag" ) ) {
+                roomExit.requireFlag = r[ "require_flag" ].asString();
+            }
+            if ( r.isMember( "require_item" ) ) {
+                roomExit.requireItem = r[ "require_item" ].asString();
+            }
+        }
+
+        return roomExit;
+    }
+
+    public string =operator( string ) const {
+        return roomId + " | " + requireFlag + " | " + requireItem;
+    }
+}
+
 public object Room
 {
     public string description;
-    public Map<string, string> exits;
+    public Map<string, Exit> exits;
     public string id;
     public Vector<string> items;
     public string name;
@@ -37,7 +65,7 @@ public object Room
 
             if ( r.isMember( "exits" ) ) {
                 foreach ( Pair<string, JsonValue> p : JsonObject r[ "exits" ] ) {
-                    room.exits.insert( p.first, p.second.asString() );
+                    room.exits.insert( p.first, Exit.parse( p.second ) );
                 }
             }
             if ( r.isMember( "items" ) ) {
@@ -56,7 +84,7 @@ public object Room
     }
 
     public void Constructor() {
-        exits = new Map<string, string>();
+        exits = new Map<string, Exit>();
         items = new Vector<string>();
         npcs  = new Vector<string>();
     }

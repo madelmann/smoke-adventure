@@ -1,5 +1,13 @@
 [
   {
+    "id": "office_desk",
+    "name": "office desk",
+    "description": "That's your desk. No matter how old and shabby it looks, it's yours.",
+    "usable": true,
+    "use_effect": "reveal_office_key",
+    "contains": ["office_key"]
+  },
+  {
     "id": "whisky_bottle",
     "name": "whisky bottle",
     "description": "An almost-empty bottle of something strong enough to melt paint.",

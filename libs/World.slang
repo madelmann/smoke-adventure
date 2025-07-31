@@ -320,7 +320,7 @@ public object World
         }
 
         var data = new JsonObject();
-        data.addMember( "location", player.location );
+        data.addMember( "location", player.locationId );
         data.addMember( "flags", flags );
         data.addMember( "inventory", inventory );
 
