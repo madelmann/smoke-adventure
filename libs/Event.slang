@@ -33,7 +33,8 @@ public object Event
     public string room;
     public bool triggered;
 
-    public static Event parse( JsonValue data ) {
+    public static Event parse( JsonValue data )
+    {
         var event = new Event() {
             var e = JsonObject data;
 
@@ -69,14 +70,16 @@ public object Event
         return event;
     }
 
-    public void Constructor() {
+    public void Constructor()
+    {
         effectFlag   = new Vector<string>();
         effectUnflag = new Vector<string>();
         requireFlag  = new Vector<string>();
         requireItem  = new Vector<string>();
     }
 
-    public void Print() const {
+    public void Print() const
+    {
         print( "ID: " + id );
         print( "Room: " + room );
         print( "Item: " + item );
@@ -101,11 +104,13 @@ public object Event
         }
     }
 
-    public bool operator==( string id_ ) const {
+    public bool operator==( string id_ ) const
+    {
         return id == id_;
     }
 
-    public string =operator( string ) const {
+    public string =operator( string ) const
+    {
         return id + " | " + room + " | " + item + " | " + triggered;
     }
 }

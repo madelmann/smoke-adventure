@@ -26,7 +26,8 @@ public object Item
     public bool usable;
     public bool useEffect;
 
-    public static Item parse( JsonValue data ) {
+    public static Item parse( JsonValue data )
+    {
         var item = new Item() {
             var i = JsonObject data;
 
@@ -48,11 +49,13 @@ public object Item
         return item;
     }
 
-    public void Constructor() {
+    public void Constructor()
+    {
         contains = new Vector<string>();
     }
 
-    public void Print() const {
+    public void Print() const
+    {
         print( "ID: " + id );
         print( "Name: " + name );
         print( "Description: " + description );
@@ -66,11 +69,13 @@ public object Item
         }
     }
 
-    public bool operator==( string id_ ) const {
+    public bool operator==( string id_ ) const
+    {
         return id == id_;
     }
 
-    public string =operator( string ) const {
+    public string =operator( string ) const
+    {
         return id + " | " + name + " | " + description;
     }
 }

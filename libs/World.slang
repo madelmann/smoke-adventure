@@ -19,11 +19,13 @@ public object World
     public Vector<Event> events;
     public string intro;
     public Vector<Item> items;
+    public string map;
     public Vector<NPC> npcs;
     public Player player;
     public Vector<Room> rooms;
 
-    public void Constructor() {
+    public void Constructor()
+    {
         events = new Vector<Event>();
         items  = new Vector<Item>();
         npcs   = new Vector<NPC>();
@@ -33,11 +35,13 @@ public object World
         load();
     }
 
-    public void Destructor() {
+    public void Destructor()
+    {
         //save();   // auto save on exit
     }
 
-    Event getEvent( string id, string item, string room ) const {
+    Event getEvent( string id, string item, string room ) const
+    {
         foreach ( Event e : events ) {
             if ( e.id == id && e.item == item && e.room == room ) {
                 // print( "Event '" + id + "', '" + item + "', '" + room + "' triggered." );
@@ -49,7 +53,8 @@ public object World
         return Event null;
     }
 
-    Item getItem( string id ) const throws {
+    Item getItem( string id ) const throws
+    {
         foreach ( Item i : items ) {
             if ( i.id == id ) {
                 return i;
@@ -59,7 +64,8 @@ public object World
         throw "Item with id '" + id + "' not found!";
     }
 
-    NPC getNPC( string id ) const throws {
+    NPC getNPC( string id ) const throws
+    {
         foreach ( NPC n : npcs ) {
             if ( n.id == id ) {
                 return n;
@@ -69,7 +75,8 @@ public object World
         throw "NPC with id '" + id + "' not found!";
     }
 
-    Room getRoom( string id ) const throws {
+    Room getRoom( string id ) const throws
+    {
         foreach ( Room r : rooms ) {
             if ( r.id == id ) {
                 return r;
@@ -79,18 +86,21 @@ public object World
         throw "Room with id '" + id + "' not found!";
     }
 
-    public void load() modify {
+    public void load() modify
+    {
         // database = new Sqlite3Database( "data/data.db" );
 
         loadEvents();
         loadIntro();
         loadItems();
+        loadMap();
         loadNPCs();
         loadPlayer();
         loadRooms();
     }
 
-    public void save() const {
+    public void save() const
+    {
         saveEvents();
         saveItems();
         saveNPCs();
@@ -98,11 +108,13 @@ public object World
         saveRooms();
     }
 
-    private void loadIntro() modify {
+    private void loadIntro() modify
+    {
         intro = loadFile( "data/intro.txt" );
     }
 
-    private void loadEvents() modify {
+    private void loadEvents() modify
+    {
         var data = JsonArray loadJson( "data/events.json" );
 
         events.clear();
@@ -112,7 +124,8 @@ public object World
         }
     }
 
-    private void loadItems() modify {
+    private void loadItems() modify
+    {
         // try {
         //     var result = database.exec( "SELECT contains, description, id, locked, name, requires_item, usable, use_effect FROM item" );
 
@@ -136,7 +149,15 @@ public object World
         }
     }
 
-    private void loadNPCs() modify {
+    private void loadMap() modify
+    {
+        try {
+            map = new Scanner( "data/map.txt" ).getText();
+        }
+    }
+
+    private void loadNPCs() modify
+    {
         var data = JsonArray loadJson( "data/npcs.json" );
 
         npcs.clear();
@@ -146,13 +167,15 @@ public object World
         }
     }
 
-    private void loadPlayer() modify {
+    private void loadPlayer() modify
+    {
         var data = loadJson( "data/player.json" );
 
         player = Player.parse( data );
     }
 
-    private void loadRooms() modify {
+    private void loadRooms() modify
+    {
         var data = JsonArray loadJson( "data/rooms.json" );
 
         rooms.clear();
@@ -162,22 +185,8 @@ public object World
         }
     }
 
-    private void saveEvents() {
-        /*
-        "id": "enter_room",
-        "room": "station",
-        "repeat": true,
-        "effect": {
-            "text": "A train whistles in the distance.",
-            "flag": [],
-            "unflag": []
-        },
-        "require": {
-            "flag": [],
-            "item": []
-        }
-        */
-
+    private void saveEvents()
+    {
         var data = new JsonArray();
 
         foreach ( Event e : events ) {
@@ -227,17 +236,8 @@ public object World
         storeFile( "save/data/events.json", writer.toString( data ) );
     }
 
-    private void saveItems() {
-        /*
-        "id": "locker",
-        "name": "locker",
-        "description": "A locked metal locker, paint flaking. There's a faint ticking from within.",
-        "usable": false,
-        "locked": true,
-        "requires_item": "locker_key",
-        "contains": ["ledger"]
-        */
-
+    private void saveItems()
+    {
         var data = new JsonArray();
 
         foreach ( Item i : items ) {
@@ -263,20 +263,16 @@ public object World
         storeFile( "save/data/items.json", writer.toString( data ) );
     }
 
-    private void saveNPCs() {
+    private void saveNPCs()
+    {
         // var data = new JsonArray();
 
         // var writer = new JsonStyledWriter();
         // storeFile( "save/data/npcs.json", writer.toString( data ) );
     }
 
-    private void savePlayer() const {
-        /*
-        "location": "detective_office",
-        "inventory": ["detective hat", "music_box", "locker_key"],
-        "flags": ["found_cufflink"]
-        */
-
+    private void savePlayer() const
+    {
         var flags = new JsonArray();
         foreach ( string flag : player.flags ) {
             flags.addMember( new JsonValue( flag ) );
@@ -296,20 +292,8 @@ public object World
         storeFile( "save/data/player.json", writer.toString( data ) );
     }
 
-    private void saveRooms() const {
-        /*
-        "id": "blue_note",
-        "name": "The Blue Note",
-        "description": "Dim lighting. A haze of smoke hangs in the air as a saxophone moans through the static of an old speaker. Red curtains hang heavy behind the stage.",
-        "items": ["cufflink", "music_box"],
-        "npcs": ["vivienne"],
-        "exits": {
-            "east": "alley",
-            "south": "station"
-            }
-        }
-        */
-
+    private void saveRooms() const
+    {
         var data = new JsonArray();
 
         foreach ( Room r : rooms ) {

@@ -9,14 +9,16 @@ import libs.World;
 
 public object Parser
 {
-    public void Constructor() {
+    public void Constructor()
+    {
         synonyms = new Synonyms();
         world    = new World() {
             player = world.player;
         }
     }
 
-    public void run() modify {
+    public void run() modify
+    {
         print( world.intro );
 
         goto( player.locationId );
@@ -73,6 +75,9 @@ public object Parser
                     }
 
                     look( item );
+                }
+                else if ( command == "map" ) {
+                    showMap();
                 }
                 else if ( command == "take" ) {
                     string item;
@@ -150,7 +155,8 @@ public object Parser
         }
     }
 
-    private void dialogue( NPC npc, string entry ) modify {
+    private void dialogue( NPC npc, string entry ) modify
+    {
         foreach ( Pair<string, Dialogue> p : npc.dialogue ) {
             if ( p.first == entry ) {
                 if ( p.second.setFlag && !player.flags.contains( p.second.setFlag ) ) {
@@ -188,7 +194,8 @@ public object Parser
         }
     }
 
-    private void events() {
+    private void events()
+    {
         print( "id | room | item | triggered" );
 
         foreach ( Event e : world.events ) {
@@ -196,7 +203,8 @@ public object Parser
         }
     }
 
-    private void executeEvent( Event event ) modify {
+    private void executeEvent( Event event ) modify
+    {
         if ( !event || ( event.triggered && !event.repeat ) ) {
             return;
         }
@@ -229,7 +237,8 @@ public object Parser
         print( event.effectText );
     }
 
-    private void give( string item, string to ) modify {
+    private void give( string item, string to ) modify
+    {
         if ( !player.inventory.contains( item ) ) {
             print( "You don't have a " + item );
             return;
@@ -247,7 +256,8 @@ public object Parser
         }
     }
 
-    private void go( string direction ) modify {
+    private void go( string direction ) modify
+    {
         foreach ( Pair<string, Exit> p : currentRoom.exits ) {
             if ( p.first == direction ) {
                 if ( p.second.requireFlag && !player.flags.contains( p.second.requireFlag ) ) {
@@ -264,7 +274,8 @@ public object Parser
         print( "You cannot go there" );
     }
 
-    private void goto( string locationId ) modify {
+    private void goto( string locationId ) modify
+    {
         foreach ( Room r : world.rooms ) {
             if ( r == locationId ) {
                 // TODO: check if we are allowed to enter the room?
@@ -283,13 +294,15 @@ public object Parser
         }
     }
 
-    private void inventory() {
+    private void inventory()
+    {
         foreach ( string item : player.inventory ) {
             print( "You have a " + item );
         }
     }
 
-    private void items( string item ) {
+    private void items( string item )
+    {
         if ( item ) {
             try {
                 var tmp = world.getItem( item );
@@ -306,7 +319,8 @@ public object Parser
         }
     }
 
-    private void look( string item ) {
+    private void look( string item )
+    {
         if ( !item ) {
             // look at room
             print( currentRoom.description );
@@ -350,19 +364,22 @@ public object Parser
         print( "There is no " + item + " in the room or your inventory." );
     }
 
-    private void lookAtItem( string id ) {
+    private void lookAtItem( string id )
+    {
         var item = world.getItem( id );
 
         print( item.description );
     }
 
-    private void lookAtNPC( string id ) {
+    private void lookAtNPC( string id )
+    {
         var npc = world.getNPC( id );
 
         print( npc.description );
     }
 
-    private void npcs( string npc ) {
+    private void npcs( string npc )
+    {
         if ( npc ) {
             try {
                 var tmp = world.getNPC( npc );
@@ -379,7 +396,8 @@ public object Parser
         }
     }
 
-    private void printDebug() {
+    private void printDebug()
+    {
         foreach ( string flag : player.flags ) {
             print( "Flag: " + flag );
         }
@@ -388,20 +406,24 @@ public object Parser
         }
     }
 
-    private void printHelp() {
+    private void printHelp()
+    {
         print( "Supported commands:" );
         print( "- menu -" );
         print( "load" );
         print( "save" );
         print( "quit" );
+        print( "" );
         print( "- game -" );
         print( "give" );
         print( "go" );
         print( "inventory" );
         print( "look" );
+        print( "map" );
         print( "take" );
         print( "talk" );
         print( "use" );
+        print( "" );
         print( "- debug - " );
         print( "debug" );
         print( "events" );
@@ -411,7 +433,8 @@ public object Parser
         print( "teleport" );
     }
 
-    private void rooms( string room ) {
+    private void rooms( string room )
+    {
         if ( room ) {
             try {
                 var tmp = world.getRoom( room );
@@ -428,7 +451,13 @@ public object Parser
         }
     }
 
-    private void take( string item ) modify {
+    private void showMap()
+    {
+        print( world.map );
+    }
+
+    private void take( string item ) modify
+    {
         foreach ( string i : currentRoom.items ) {
             if ( i == item ) {
                 print( "You are picking up " + i );
@@ -447,7 +476,8 @@ public object Parser
         print( "You can't take that." );
     }
 
-    private void talk( string npc ) modify {
+    private void talk( string npc ) modify
+    {
         foreach ( string n : currentRoom.npcs ) {
             if ( n == npc ) {
                 try {
@@ -459,7 +489,8 @@ public object Parser
         print( "You can't do that." );
     }
 
-    private void use( string item, string with ) modify {
+    private void use( string item, string with ) modify
+    {
         foreach ( string i : currentRoom.items ) {
             if ( i == item ) {
                 useItem( item );
@@ -477,7 +508,8 @@ public object Parser
         print( "You can't do that." );
     }
 
-    private void useItem( string id ) modify throws {
+    private void useItem( string id ) modify throws
+    {
         foreach ( Item i : world.items ) {
             if ( i.id == id ) {
                 if ( !i.usable ) {

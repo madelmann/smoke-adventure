@@ -1,10 +1,10 @@
 {
   "name": "The Smoke Under Harbour Street",
   "name_short": "SmokeAdventure",
-  "version": "0.1.0",
-  "description": "The Smoke Under Harbour Street - A ChatGTP Text Adventure.",
+  "version": "0.1.1",
+  "description": "The Smoke Under Harbour Street",
   "dependencies": [
-    { "module": "FileReader", "version_min": "1.0.2-alpha" },
+    { "module": "FileReader", "version_min": "1.0.2" },
     { "module": "Slang", "version_min": "0.9.3" },
     { "module": "System", "version_min": "0.4.7" },
     { "module": "libJson", "version_min": "0.4.4" }

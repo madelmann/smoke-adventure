@@ -10,11 +10,13 @@ import Utils;
 
 public object Synonyms
 {
-    public void Constructor() {
+    public void Constructor()
+    {
         loadSynonyms();
     }
 
-    public void prepare( String input ) {
+    public void prepare( String input )
+    {
         // replace input with synonyms, so that only our commands are returned,
         // but make sure to only replace the whole token if a space is following
         // or it is at the end of the input
@@ -44,7 +46,8 @@ public object Synonyms
         }
     }
 
-    private void loadSynonyms() modify {
+    private void loadSynonyms() modify
+    {
         var data = JsonObject loadJson( "data/synonyms.json" );
 
         synEmpty = new Vector<string>();
