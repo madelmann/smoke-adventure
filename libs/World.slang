@@ -80,7 +80,7 @@ public object World
     }
 
     public void load() modify {
-        // database = new Sqlite3Database( "data.db" );
+        // database = new Sqlite3Database( "data/data.db" );
 
         loadEvents();
         loadIntro();

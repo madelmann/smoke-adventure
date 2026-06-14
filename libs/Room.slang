@@ -4,11 +4,13 @@
 "name": "The Blue Note",
 "description": "A smoky jazz club with a lingering air of secrets. A piano plays in the corner. Mick polishes glasses behind the counter.",
 "exits": {
-    "west": "office",
-    "south": "docks"
+    "west": { "id": "office" },
+    "south": { "id: "docks" }
 },
 "items": ["bourbon"],
-"npcs": ["mick"]
+"npcs": ["mick"],
+"require_item": null,
+"require_flag": null
 */
 
 // library imports

@@ -7,7 +7,9 @@
     "npcs": [],
     "exits": {
       "north": { "id": "hallway", "require_item": "office_key" }
-    }
+    },
+    "require_item": "office_key",
+    "require_flag": null
   },
   {
     "id": "blue_note",
