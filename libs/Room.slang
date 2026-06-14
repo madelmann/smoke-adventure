@@ -26,7 +26,8 @@ public object Exit
     public string requireItem;
     public string roomId;
 
-    public static Exit parse( JsonValue data ) {
+    public static Exit parse( JsonValue data )
+    {
         var roomExit = new Exit() {
             var r = JsonObject data;
 
@@ -43,7 +44,8 @@ public object Exit
         return roomExit;
     }
 
-    public string =operator( string ) const {
+    public string =operator( string ) const
+    {
         return roomId + " | " + requireFlag + " | " + requireItem;
     }
 }
@@ -57,7 +59,8 @@ public object Room
     public string name;
     public Vector<string> npcs;
 
-    public static Room parse( JsonValue data ) {
+    public static Room parse( JsonValue data )
+    {
         var room = new Room() {
             var r = JsonObject data;
 
@@ -85,13 +88,15 @@ public object Room
         return room;
     }
 
-    public void Constructor() {
+    public void Constructor()
+    {
         exits = new Map<string, Exit>();
         items = new Vector<string>();
         npcs  = new Vector<string>();
     }
 
-    public void Print() const {
+    public void Print() const
+    {
         print( "ID: " + id );
         print( "Name: " + name );
         print( "Description: " + description );
@@ -109,11 +114,13 @@ public object Room
         }
     }
 
-    public bool operator==( string id_ ) const {
+    public bool operator==( string id_ ) const
+    {
         return id == id_;
     }
 
-    public string =operator( string ) const {
+    public string =operator( string ) const
+    {
         return id + " | " + name + " | " + description;
     }
 }

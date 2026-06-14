@@ -40,7 +40,8 @@ public object Choice
     public string requireItem;
     public string text;
 
-    public static Choice parse( JsonValue data ) {
+    public static Choice parse( JsonValue data )
+    {
         var choice = new Choice() {
             var c = JsonObject data;
 
@@ -53,7 +54,8 @@ public object Choice
         return choice;
     }
 
-    public string =operator( string ) const {
+    public string =operator( string ) const
+    {
         return text + " | " + next;
     }
 }
@@ -65,7 +67,8 @@ public object Dialogue
     public string setItem;
     public string text;
 
-    public static Dialogue parse( JsonValue data ) modify {
+    public static Dialogue parse( JsonValue data ) modify
+    {
         var dialogue = new Dialogue() {
             var d = JsonObject data;
 
@@ -83,11 +86,13 @@ public object Dialogue
         return dialogue;
     }
 
-    public void Constructor() {
+    public void Constructor()
+    {
         choices = new Map<int, Choice>();
     }
 
-    public string =operator( string ) const {
+    public string =operator( string ) const
+    {
         return text + " | " + setFlag + " | " + setItem;
     }
 }
@@ -100,7 +105,8 @@ public object NPC
     public string name;
     public string personality;
 
-    public static NPC parse( JsonValue data ) modify {
+    public static NPC parse( JsonValue data ) modify
+    {
         var npc = new NPC() {
             var d = JsonObject data;
 
@@ -117,11 +123,13 @@ public object NPC
         return npc;
     }
 
-    public void Constructor() {
+    public void Constructor()
+    {
         dialogue = new Map<string, Dialogue>();
     }
 
-    public void Print() const {
+    public void Print() const
+    {
         print( "ID: " + id );
         print( "Name: " + name );
         print( "Description: " + description );
@@ -132,11 +140,13 @@ public object NPC
         }
     }
 
-    public bool operator==( string id_ ) const {
+    public bool operator==( string id_ ) const
+    {
         return id == id_;
     }
 
-    public string =operator( string ) const {
+    public string =operator( string ) const
+    {
         return id + " | " + name + " | " + description;
     }
 }

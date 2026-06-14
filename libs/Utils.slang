@@ -5,11 +5,13 @@ import libJson;
 // project imports
 
 
-private string loadFile( string filename ) const {
+private string loadFile( string filename ) const
+{
     return new Scanner( filename ).getText();
 }
 
-private JsonValue loadJson( string filename ) const {
+private JsonValue loadJson( string filename ) const
+{
     var reader = new JsonReader();
 
     string content;
@@ -20,7 +22,8 @@ private JsonValue loadJson( string filename ) const {
     return reader.parse( loadFile( filename ) );
 }
 
-private void storeFile( string filename, string content ) const {
+private void storeFile( string filename, string content ) const
+{
     var file = new System.IO.File( filename, System.IO.File.AccessMode.WriteOnly ) {
         file.write( content );
         file.close();
@@ -28,9 +31,11 @@ private void storeFile( string filename, string content ) const {
 }
 
 
-private namespace {
+private namespace
+{
 
-    void debug( string message ) {
+    void debug( string message )
+    {
         print( "DEBUG: " + message );
     }
 

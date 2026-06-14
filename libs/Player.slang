@@ -17,7 +17,8 @@ public object Player
     public Vector<string> inventory;
     public string locationId;
 
-    public static Player parse( JsonValue data ) {
+    public static Player parse( JsonValue data )
+    {
         var player = new Player() {
             var p = JsonObject data;
 
@@ -37,7 +38,8 @@ public object Player
         return player;
     }
 
-    public void Constructor() {
+    public void Constructor()
+    {
         flags     = new Vector<string>();
         inventory = new Vector<string>();
     }
