@@ -1,7 +1,7 @@
 [
   {
-    "id": "detective_office",
-    "name": "The Detective's Office",
+    "id": "office",
+    "name": "Anger's Office",
     "description": "The blinds cast crooked shadows across a desk littered with old case files and empty glasses. Rain drums steadily against the windowpane.",
     "items": ["office_desk","whisky_bottle", "case_file"],
     "npcs": [],
@@ -12,8 +12,8 @@
     "require_flag": null
   },
   {
-    "id": "blue_note",
-    "name": "The Blue Note",
+    "id": "barber",
+    "name": "Barber",
     "description": "Dim lighting. A haze of smoke hangs in the air as a saxophone moans through the static of an old speaker. Red curtains hang heavy behind the stage.",
     "items": ["cufflink", "music_box","bourbon"],
     "npcs": ["vivienne"],
@@ -23,8 +23,8 @@
     }
   },
   {
-    "id": "alley",
-    "name": "The Alley",
+    "id": "diner",
+    "name": "Meg's Diner",
     "description": "A narrow passage soaked in neon and rain. Broken bottles glint in puddles, and something shifts behind the trash bins.",
     "items": ["crowbar"],
     "npcs": [],
@@ -35,8 +35,8 @@
     }
   },
   {
-    "id": "station",
-    "name": "The Train Station",
+    "id": "police",
+    "name": "Police Station",
     "description": "Flickering lights illuminate rows of old lockers. The air smells of rust, oil, and distant train brakes.",
     "items": ["locker"],
     "npcs": ["mick"],
@@ -46,8 +46,8 @@
     }
   },
   {
-    "id": "warehouse_entrance",
-    "name": "The Warehouse: Entrance",
+    "id": "newspaper",
+    "name": "Newspaper Office",
     "description": "A massive steel door blocks the way. Graffiti scrawled across the surface almost hides a worn plaque: 'Warehouse 12.'",
     "items": [],
     "npcs": ["guard"],
@@ -57,8 +57,8 @@
     }
   },
   {
-    "id": "warehouse",
-    "name": "The Warehouse",
+    "id": "bar",
+    "name": "Jake's Joint",
     "description": "Stacks of crates rise like mausoleums in the dust-heavy air. A single bulb sways gently overhead, casting long shadows that don’t quite sit still.",
     "items": ["ledger"],
     "npcs": ["leone"],
@@ -67,8 +67,8 @@
     }
   },
   {
-    "id": "docks",
-    "name": "The Docks",
+    "id": "louise",
+    "name": "Louise Creel's Apartment",
     "description": "Water laps quietly against rotting piers. A ship sits anchored in darkness. Somewhere, a gull screams.",
     "items": ["boat_manifest"],
     "npcs": [],
@@ -78,8 +78,8 @@
     }
   },
   {
-    "id": "hallway",
-    "name": "The Hallway",
+    "id": "jail",
+    "name": "Jail",
     "description": "Bare bulbs flicker over worn linoleum. Doors line the hall like silent witnesses to a thousand forgotten arguments.",
     "items": [],
     "npcs": [],
@@ -89,14 +89,118 @@
     }
   },
   {
-    "id": "street",
-    "name": "The Street",
+    "id": "foundry",
+    "name": "The Foundry",
     "description": "The street glistens under rainfall and lamplight. Cars pass like ghosts. The city never really sleeps — it just waits.",
     "items": [],
     "npcs": [],
     "exits": {
       "east": { "id": "alley" },
       "south": { "id": "hallway" }
+    }
+  },
+  {
+    "id": "motel",
+    "name": "Palm Tree Motel",
+    "description": "",
+    "items": [],
+    "npcs": [],
+    "exits": {
+      "east": { "id": "" },
+      "north": { "id": "" },
+      "south": { "id": "" },
+      "west": { "id": "" }
+    }
+  },
+  {
+    "id": "station",
+    "name": "Railway Station",
+    "description": "",
+    "items": [],
+    "npcs": [],
+    "exits": {
+      "east": { "id": "" },
+      "north": { "id": "" },
+      "south": { "id": "" },
+      "west": { "id": "" }
+    }
+  },
+  {
+    "id": "warehouse",
+    "name": "Warehouse",
+    "description": "",
+    "items": [],
+    "npcs": [],
+    "exits": {
+      "east": { "id": "" },
+      "north": { "id": "" },
+      "south": { "id": "" },
+      "west": { "id": "" }
+    }
+  },
+  {
+    "id": "brewer",
+    "name": "Carl Brewer's Office",
+    "description": "",
+    "items": [],
+    "npcs": [],
+    "exits": {
+      "east": { "id": "" },
+      "north": { "id": "" },
+      "south": { "id": "" },
+      "west": { "id": "" }
+    }
+  },
+  {
+    "id": "laundry",
+    "name": "Red Dragon Laundry",
+    "description": "",
+    "items": [],
+    "npcs": [],
+    "exits": {
+      "east": { "id": "" },
+      "north": { "id": "" },
+      "south": { "id": "" },
+      "west": { "id": "" }
+    }
+  },
+  {
+    "id": "club",
+    "name": "Blue Angel Club",
+    "description": "",
+    "items": [],
+    "npcs": [],
+    "exits": {
+      "east": { "id": "" },
+      "north": { "id": "" },
+      "south": { "id": "" },
+      "west": { "id": "" }
+    }
+  },
+  {
+    "id": "hotel",
+    "name": "Hotel Seville",
+    "description": "",
+    "items": [],
+    "npcs": [],
+    "exits": {
+      "east": { "id": "" },
+      "north": { "id": "" },
+      "south": { "id": "" },
+      "west": { "id": "" }
+    }
+  },
+  {
+    "id": "cabin",
+    "name": "Joel Jones' Cabin",
+    "description": "",
+    "items": [],
+    "npcs": [],
+    "exits": {
+      "east": { "id": "" },
+      "north": { "id": "" },
+      "south": { "id": "" },
+      "west": { "id": "" }
     }
   }
 ]

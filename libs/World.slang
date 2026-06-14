@@ -8,6 +8,7 @@ import System.Collections.Vector;
 // project imports
 import Event;
 import Item;
+import Lead;
 import NPC;
 import Player;
 import Room;
@@ -19,6 +20,7 @@ public object World
     public Vector<Event> events;
     public string intro;
     public Vector<Item> items;
+    public Vector<Lead> leads;
     public string map;
     public Vector<NPC> npcs;
     public Player player;
@@ -28,6 +30,7 @@ public object World
     {
         events = new Vector<Event>();
         items  = new Vector<Item>();
+        leads  = new Vector<Lead>();
         npcs   = new Vector<NPC>();
         player = new Player();
         rooms  = new Vector<Room>();
@@ -146,6 +149,17 @@ public object World
 
         foreach ( JsonValue i : data ) {
             items.push_back( Item.parse( i ) );
+        }
+    }
+
+    private void loadLoads() modify
+    {
+        var data = JsonArray loadJson( "data/leads.json" );
+
+        leads.clear();
+
+        foreach ( JsonValue i : data ) {
+            leads.push_back( Lead.parse( i ) );
         }
     }
 

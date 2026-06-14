@@ -1,8 +1,8 @@
 {
-  "name": "The Smoke Under Harbour Street",
-  "name_short": "SmokeAdventure",
+  "name": "The Dame Was Loaded",
+  "name_short": "TheDameWasLoaded",
   "version": "0.1.1",
-  "description": "The Smoke Under Harbour Street",
+  "description": "The Dame Was Loaded",
   "dependencies": [
     { "module": "FileReader", "version_min": "1.0.2" },
     { "module": "Slang", "version_min": "0.9.3" },
@@ -11,7 +11,7 @@
   ],
   "keywords": [ "game" ],
   "target": {
-    "directory": "SmokeAdventure",
+    "directory": "TheDameWasLoaded",
     "install": [],
     "type": "internal"
   }

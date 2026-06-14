@@ -1,0 +1,15 @@
+[
+  {
+    "id": "locker_413",
+    "title": "Locker #413",
+    "description": "Mick mentioned a locker at the station.",
+    "discovered_by": [
+      "locker_clue"
+    ]
+  },
+  {
+    "id": "leone",
+    "title": "Leone",
+    "description": "Vivienne appears terrified of him."
+  }
+]
